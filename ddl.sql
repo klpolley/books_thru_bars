@@ -17,45 +17,16 @@ create table if not exists book(
     foreign key (genreId) references genre(genreId)
 );
 
-create table if not exists event(
-    eventId serial primary key,
-    type varchar,
-    date date
-);
-
 create table if not exists copy(
     copyId serial primary key,
     bookId integer,
-    logged integer,
-    sent integer,
+    logged date,
+    sent date,
 
-    foreign key (bookId) references book(bookId),
-    foreign key (logged) references event(eventId),
-    foreign key (sent) references event(eventId)
+    check (sent >= logged),
+
+    foreign key (bookId) references book(bookId)
 );
-
-create function log_book() returns trigger as $$
-    BEGIN
-    
-        if (select type from new inner join event on logged = eventId where eventId = new.logged) != "Logging"
-        then raise exception 'must log book at mailing event';
-        end if;
-
-        if (select type from new inner join event on sent = eventId where eventId = new.sent) != "Mailing"
-        then raise exception 'must send book at mailing event';
-        end if;
-
-        if (select date from new inner join event on sent = eventId where eventId = new.sent) < 
-            (select date from new inner join event on logged = eventId where eventId = new.logged)
-        then raise exception 'must send after logging';
-        end if;
-
-        return new;
-    END;
-$$ LANGUAGE plpgsql;
-
-create trigger log_book before insert or update on copy
-    for each row execute procedure log_book();
 
 create table if not exists storage(
     locationId serial primary key,

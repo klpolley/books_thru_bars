@@ -30,6 +30,23 @@ def insert_books(conn, values):
             print(e)
 
 
+def insert_copies(conn, values):
+    for row in values:
+        try:
+            c = conn.cursor()
+
+            select = "SELECT bookId from book where title ="+"'"+row['title']+"'"
+            c.execute(select)
+            data = c.fetchall()
+            bookId = data[0][0]
+
+            insert = "INSERT INTO copy(bookId, logged, sent) VALUES(" + "'" + row['title'] + "'" + "," + str(genreID) + ")"
+            c.execute(insert)
+
+        except Error as e:
+            print(e)
+
+
 
 def import_library():
     conn = connect()

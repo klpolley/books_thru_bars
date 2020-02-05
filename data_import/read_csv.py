@@ -30,9 +30,9 @@ def read_library_csv(file_name):
 
             values['genre'] = row[3].strip()
 
-            values['date in'] = datetime.strptime(row[4], '%m/%d/%y')
+            values['date in'] = datetime.strptime(row[4], '%m/%d/%y').strftime("%Y-%m-%d")
             if row[5] != '':
-                values['date out'] = datetime.strptime(row[5], '%m/%d/%y')
+                values['date out'] = datetime.strptime(row[5], '%m/%d/%y').strftime("%Y-%m-%d")
 
             entries.append(values)
 
