@@ -35,12 +35,19 @@ def insert_copies(conn, values):
         try:
             c = conn.cursor()
 
+            print("inserting: " + row['title'])
+
             select = "SELECT bookId from book where title ="+"'"+row['title']+"'"
             c.execute(select)
             data = c.fetchall()
             bookId = data[0][0]
 
-            insert = "INSERT INTO copy(bookId, logged, sent) VALUES(" + "'" + row['title'] + "'" + "," + str(genreID) + ")"
+            if row['sent'] != None:
+                insert = "INSERT INTO copy(bookId, logged, sent) VALUES(" + "'" + str(bookId) + "'" \
+                     + ", '" + row['logged'] + "','" + row['sent'] + "')"
+            else:
+                insert = "INSERT INTO copy(bookId, logged, sent) VALUES(" + "'" + str(bookId) + "'" \
+                         + ", '" + row['logged'] + "',NULL)"
             c.execute(insert)
 
         except Error as e:
@@ -54,6 +61,7 @@ def import_library():
     try:
         values = read_library_csv('catalog.csv')
         #insert_books(conn, values)
+        insert_copies(conn, values)
 
         conn.commit()
 
