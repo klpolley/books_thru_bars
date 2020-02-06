@@ -54,6 +54,63 @@ def insert_copies(conn, values):
             print(e)
 
 
+def insert_authors(conn, values):
+
+    books_done = set()
+    authors_done = set()
+    editors_done = set()
+
+    for row in values:
+        try:
+            c = conn.cursor()
+
+            if row['title'] in books_done: continue
+
+            select = "SELECT bookID from book where title =" + "'" + row['title'] + "'"
+            c.execute(select)
+
+            data = c.fetchall()
+            bookID = data[0][0]
+
+            for author in row['authors']:
+
+                if author not in authors_done:
+                    insert = "INSERT INTO author(name) VALUES(" + "'" + author + "')"
+                    c.execute(insert)
+                    authors_done.add(author)
+
+                select = "SELECT authorID from author where name =" + "'" + author + "'"
+                c.execute(select)
+
+                data = c.fetchall()
+                authorID = data[0][0]
+
+                join = "INSERT INTO written_by(bookid, authorid) VALUES("+ "'" + str(bookID) + "'," + "'" + str(authorID) + "')"
+                c.execute(join)
+
+            if 'editors' in row:
+                for editor in row['editors']:
+                    if editor not in editors_done:
+                        insert = "INSERT INTO editor(name) VALUES(" + "'" + editor + "')"
+                        c.execute(insert)
+                        editors_done.add(editor)
+
+                    select = "SELECT editorId from editor where name =" + "'" + editor + "'"
+                    c.execute(select)
+
+                    data = c.fetchall()
+                    editorID = data[0][0]
+
+                    join = "INSERT INTO edited_by VALUES("+ "'" + str(bookID) + "'," + "'" + str(editorID) + "')"
+                    c.execute(join)
+
+            books_done.add(row['title'])
+            print(row['title'])
+
+        except Error as e:
+            print(e)
+
+
 
 def import_library():
     conn = connect()
@@ -61,7 +118,8 @@ def import_library():
     try:
         values = read_library_csv('catalog.csv')
         #insert_books(conn, values)
-        insert_copies(conn, values)
+        #insert_copies(conn, values)
+        insert_authors(conn, values)
 
         conn.commit()
 
