@@ -28,22 +28,6 @@ create table if not exists copy(
     foreign key (bookId) references book(bookId)
 );
 
-create table if not exists storage(
-    locationId serial primary key,
-    name varchar not null,
-    capacity int
-);
-
-create table if not exists book_location(
-    copyId integer,
-    locationId integer,
-
-    primary key(copyId, locationId),
-
-    foreign key (copyId) references copy(copyId),
-    foreign key (locationId) references storage(locationId)
-);
-
 create table if not exists author(
     authorId serial primary key,
     name varchar not null
@@ -84,6 +68,8 @@ create table if not exists facility(
     facilityId serial primary key,
     name varchar not null,
     address varchar,
+    city varchar,
+    zipcode varchar,
     stateId integer,
 
     unique (name, stateId),

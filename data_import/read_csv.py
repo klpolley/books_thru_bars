@@ -40,3 +40,27 @@ def read_library_csv(file_name):
 
 
         return entries
+
+def read_prison_csv(file_name):
+    with open(file_name) as currentcsv:
+        readcsv = csv.reader(currentcsv, delimiter=',')
+        # 0 - date, 1 - facility name, 2 - address, 3 - city, 4 - zip code, 5 - state abbr, 6 - state
+
+        entries = []
+
+        for row in readcsv:
+
+            if row[0] == '\ufeffdate': continue
+
+            values = {}
+
+            values['date'] = datetime.strptime(row[0], '%m/%d/%y').strftime("%Y-%m-%d")
+            values['facility'] = row[1].strip().upper()
+            values['address'] = row[2].strip().upper()
+            values['city'] = row[3].strip().upper()
+            values['zipcode'] = row[4].strip()
+            values['state'] = row[5].strip().upper()
+
+            entries.append(values)
+
+        return entries

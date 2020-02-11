@@ -2,7 +2,7 @@ import sys
 from psycopg2 import Error, DatabaseError
 
 from data_import.connect import connect, disconnect
-from data_import.read_csv import read_library_csv
+from data_import.read_csv import read_library_csv, read_prison_csv
 
 
 def insert_books(conn, values):
@@ -111,15 +111,49 @@ def insert_authors(conn, values):
             print(e)
 
 
+def import_facilities(conn, values):
+
+    seen = set()
+
+    for entry in values:
+        try:
+            c = conn.cursor()
+            if entry['facility'] in seen:
+                select = "SELECT facilityId FROM facility WHERE name = '"+entry['facility'] + "'"
+                c.execute(select)
+                data = c.fetchall()
+                facilityId = data[0][0]
+            else:
+                state = "SELECT stateId FROM state WHERE abbreviation = '"+ entry['state'] + "'"
+                c.execute(state)
+                data = c.fetchall()
+                stateId = data[0][0]
+                insert = "INSERT INTO facility(name, address, city, zipcode, stateId) VALUES('"+entry['facility'] + \
+                         "', '" + entry['address'] + "', '"+ entry['city'] + "', '" + entry['zipcode'] + \
+                         "', " + str(stateId) + ") RETURNING facilityId"
+                c.execute(insert)
+                data = c.fetchall()
+                facilityId = data[0][0]
+                seen.add(entry['facility'])
+
+            insert = "INSERT INTO package(facilityId, datesent) VALUES(" + str(facilityId) + ", '" + entry['date'] + "')"
+            c.execute(insert)
+
+        except Error as e:
+            print(e)
+
+
 
 def import_library():
     conn = connect()
 
     try:
-        values = read_library_csv('catalog.csv')
+        #values = read_library_csv('catalog.csv')
         #insert_books(conn, values)
         #insert_copies(conn, values)
-        insert_authors(conn, values)
+        #insert_authors(conn, values)
+        values = read_prison_csv('packages_confirmed.csv')
+        import_facilities(conn, values)
 
         conn.commit()
 
