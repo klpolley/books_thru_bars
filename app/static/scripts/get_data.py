@@ -23,5 +23,18 @@ def retrieve_facilities():
     return facilities
 
 
-if __name__ == '__main__':
-    retrieve_facilities()
+def get_ithaca():
+    conn = connect()
+    c = conn.cursor()
+
+    select = "SELECT latitude, longitude FROM ithaca"
+    c.execute(select)
+    data = c.fetchall()[0]
+
+    coords = {
+        'name': "Ithaca",
+        'latitude': data[0],
+        'longitude': data[1]
+    }
+
+    return coords

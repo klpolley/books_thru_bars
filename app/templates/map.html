@@ -27,8 +27,12 @@
         <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
             integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
             crossorigin="">
-
         </script>
+
+        <link rel="stylesheet" href="../static/Leaflet.markercluster-1.4.1/dist/MarkerCluster.css">
+        <link rel="stylesheet" href="../static/Leaflet.markercluster-1.4.1/dist/MarkerCluster.Default.css">
+        <script src="../static/Leaflet.markercluster-1.4.1/dist/leaflet.markercluster.js"></script>
+
     </head>
 
         <div class="centered">
@@ -38,7 +42,7 @@
 
             <script type="text/javascript">
                 var fac = {{ facilities | tojson }}
-
+                var ith = {{ ithaca | tojson }}
 
                 var map = L.map('mapid').setView([39, -97], 4);
 
@@ -53,14 +57,32 @@
                     zoomOffset: -1
                 }).addTo(map);
 
+                //marker cluster code from https://github.com/Leaflet/Leaflet.markercluster
+                // var markers = L.markerClusterGroup({
+                //     maxClusterRadius: 40
+                // });
                 fac.forEach(f => {
                         L.marker([f['latitude'], f['longitude']]).addTo(map)
-                            .bindPopup(f['name'])
+                            .bindPopup(f['name']);
+                        //markers.addLayer(L.marker([f['latitude'], f['longitude']]).bindPopup(f['name']))
                     }
                 );
+                //map.addLayer(markers)
 
+                var btbIcon = L.icon({
+                    iconUrl: 'static/gold_marker.png',
+                    iconSize: [30, 45],
+                    iconAnchor: [15, 44],
+                    popupAnchor:  [0, -42]
+                });
+
+                var logo = "<img src= {{ url_for('static', filename='btb_logo.png') }} alt='Books Thru Bars'" +
+                    "width='70' height='70'/>";
+                L.marker([ith['latitude'], ith['longitude']], {icon: btbIcon}).addTo(map)
+                    .bindPopup(logo);
 
             </script>
+
 
         </div>
 
