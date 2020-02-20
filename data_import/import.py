@@ -1,8 +1,8 @@
 import sys
 from psycopg2 import Error, DatabaseError
 
-from data_import.connect import connect, disconnect
-from data_import.read_csv import read_library_csv, read_prison_csv
+from app.scripts.database.connect import connect, disconnect
+from data_import.read_csv import read_prison_csv
 
 
 def insert_books(conn, values):

@@ -1,6 +1,6 @@
 import psycopg2
 import psycopg2.extras
-from data_import.config import config
+from app.scripts.database.config import config
 import sys
 
 
