@@ -7,3 +7,7 @@ from app import app
 @app.route('/index', methods=['GET', 'POST'])
 def index():
     return render_template('index.html', title='Home')
+
+@app.route('/map', methods=['GET', 'POST'])
+def map():
+    return render_template('map.html', title="Map")

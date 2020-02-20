@@ -102,3 +102,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+.idea
+.idea/books_thru_bars.iml
+.idea/misc.xml
