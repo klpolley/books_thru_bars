@@ -1,11 +1,12 @@
 from configparser import ConfigParser
 
 
-def config(filename='database.ini', section='postgresql'):
+def config(filename='/Users/katie/BTB_Project/app/static/scripts/database/database.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
-    parser.read(filename)
+
+    print(parser.read(filename))
 
     # get section, default to postgresql
     db = {}

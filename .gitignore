@@ -109,6 +109,6 @@ venv.bak/
 .idea/books_thru_bars.iml
 .idea/misc.xml
 
-database.ini
+app/static/scripts/database/database.ini
 
 
