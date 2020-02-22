@@ -38,3 +38,38 @@ def get_ithaca():
     }
 
     return coords
+
+
+def retrieve_genres():
+    conn = connect()
+    c = conn.cursor()
+
+    select_lib = "SELECT g.name AS genre, count(*) AS num FROM copy " \
+                 "JOIN book b ON copy.bookid = b.bookid " \
+                 "JOIN genre g ON b.genreid = g.genreid " \
+                 "WHERE sent IS NULL " \
+                 "GROUP BY g.name " \
+                 "ORDER BY g.name"
+
+    select_sent = "SELECT g.name AS genre, count(*) AS num FROM copy " \
+                 "JOIN book b ON copy.bookid = b.bookid " \
+                 "JOIN genre g ON b.genreid = g.genreid " \
+                 "WHERE sent IS NOT NULL " \
+                 "GROUP BY g.name " \
+                 "ORDER BY g.name"
+
+    c.execute(select_lib)
+    data = c.fetchall()
+
+    library = {}
+    for row in data:
+        library[row[0]] = row[1]
+
+    c.execute(select_sent)
+    data = c.fetchall()
+
+    sent = {}
+    for row in data:
+        sent[row[0]] = row[1]
+
+    return library, sent
