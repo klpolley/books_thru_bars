@@ -73,3 +73,18 @@ def retrieve_genres():
         sent[row[0]] = row[1]
 
     return library, sent
+
+
+def retrieve_mailings():
+    conn = connect()
+    c = conn.cursor()
+
+    select = "SELECT sent, count(*) FROM copy WHERE sent IS NOT NULL GROUP BY sent;"
+    c.execute(select)
+    data = c.fetchall()
+
+    mailings = {}
+    for row in data:
+        mailings[str(row[0])] = row[1]
+
+    return mailings

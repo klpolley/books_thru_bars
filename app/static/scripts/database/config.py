@@ -6,7 +6,7 @@ def config(filename='/Users/katie/BTB_Project/app/static/scripts/database/databa
     parser = ConfigParser()
     # read config file
 
-    print(parser.read(filename))
+    parser.read(filename)
 
     # get section, default to postgresql
     db = {}

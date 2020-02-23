@@ -11,7 +11,7 @@ def connect():
         cur = con.cursor()
         cur.execute('SELECT version()')
         version = cur.fetchone()[0]
-        print(version)
+        #print(version)
 
         return con
 
