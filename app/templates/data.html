@@ -141,7 +141,7 @@
         popupAnchor:  [0, -42]
     });
 
-    var logo = "<img src= {{ url_for('static', filename='/imagesbtb_logo.png') }} alt='Books Thru Bars'" +
+    var logo = "<img src= {{ url_for('static', filename='/images/btb_logo.png') }} alt='Books Thru Bars'" +
         "width='70' height='70'/>";
     L.marker([ith['latitude'], ith['longitude']], {icon: btbIcon}).addTo(map)
         .bindPopup(logo);
