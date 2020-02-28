@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <head>
+        <link rel="stylesheet" href="../static/stylesheets/data.css">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+                integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+                crossorigin=""
+        />
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+            integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+            crossorigin="">
+        </script>
+
+        <script src="../static/node_modules/chart.js/dist/Chart.bundle.js"></script>
+        <script src="../static/node_modules/chart.js/dist/Chart.bundle.min.js"></script>
+        <link rel="stylesheet" href="../static/node_modules/chart.js/dist/Chart.css">
+    </head>
+
+        <div class="centered" style="background-color: #11557C; padding: 20px">
+            <h1 style="color: white;"> How many books have we sent? </h1>
+            <div class="centered" style="width: 1100px"><canvas id="time"></canvas></div>
+            <h1 style="color: white;">Where have we sent books?</h1>
+            <div style="height: 600px" id="mapid" class="centered"></div>
+            <h1 style="color: white;"> What genres of books have we sent? </h1>
+            <h4 style="color: white;">Inner Ring: Our Library</h4>
+            <h4 style="color: white;">Outer Ring: Sent Books</h4>
+            <div style="height: 600px; margin: 30px"><canvas id="sentGenre"></canvas></div>
+
+        </div>
+
+<!--TIME GRAPH SCRIPT-->
+<script>
+		var mail = {{ mailings | tojson }}
+
+		var timeFormat = 'YYYY-MM-DD';
+
+        var mailings = [];
+        for(var k in mail) mailings.push(k);
+
+
+        var numSent = [];
+        for (var k in mailings) {
+            numSent.push(mail[mailings[k]]);
+        }
+
+
+		var color = Chart.helpers.color;
+		var config = {
+			type: 'line',
+			data: {
+				labels: mailings,
+				datasets: [{
+					label: 'Books Mailed',
+					borderColor: "gold",
+					fill: false,
+					data: numSent,
+				}]
+			},
+			options: {
+				title: {
+					text: 'Chart.js Time Scale'
+				},
+                legend: {
+                    display: false
+                },
+
+				scales: {
+					xAxes: [{
+						type: 'time',
+						time: {
+							parser: timeFormat,
+						},
+						scaleLabel: {
+							display: true,
+							labelString: 'Date',
+                            fontColor: "#DDEEFF"
+						},
+						ticks: {
+						    fontColor: "#DDEEFF"
+                        },
+                        gridLines: {
+				            color: 'rgba(250, 230, 210, 0.2)',
+                        },
+					}],
+					yAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: 'Books',
+                            fontColor: "#DDEEFF"
+                        },
+                        ticks: {
+						    fontColor: "#DDEEFF"
+                        },
+                        gridLines: {
+				            color: 'rgba(250, 230, 210, 0.2)',
+                        },
+					}]
+				},
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('time').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+
+		};
+
+	</script>
+
+<!--MAP SCRIPT-->
+<script type="text/javascript">
+    var fac = {{ facilities | tojson }}
+    var ith = {{ ithaca | tojson }}
+
+    var map = L.map('mapid').setView([39, -97], 4);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+            '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1
+    }).addTo(map);
+
+    fac.forEach(f => {
+            L.marker([f['latitude'], f['longitude']]).addTo(map)
+                .bindPopup(f['name']);
+        }
+    );
+
+    var btbIcon = L.icon({
+        iconUrl: 'static/images/gold_marker.png',
+        iconSize: [30, 45],
+        iconAnchor: [15, 44],
+        popupAnchor:  [0, -42]
+    });
+
+    var logo = "<img src= {{ url_for('static', filename='/images/btb_logo.png') }} alt='Books Thru Bars'" +
+        "width='70' height='70'/>";
+    L.marker([ith['latitude'], ith['longitude']], {icon: btbIcon}).addTo(map)
+        .bindPopup(logo);
+
+</script>
+
+<!--GENRE CHART SCRIPT-->
+<script>
+    var ctx = document.getElementById('sentGenre').getContext('2d');
+
+    var lib = {{ library | tojson }}
+    var sent = {{ sent | tojson }}
+
+    var genres = [];
+    for(var k in sent) genres.push(k);
+
+    var numSent = [];
+    for (var k in genres) {
+        numSent.push(sent[genres[k]]);
+    }
+
+    var numHave = [];
+    for (var k in genres) {
+        numHave.push(lib[genres[k]]);
+    }
+
+    var sentByGenreDonut = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: genres,
+            datasets: [{
+                label: "Books Sent",
+                data: numSent,
+                backgroundColor: [
+                    'rgba(255, 88, 88, 1)', //classic
+                    'rgba(252, 132, 88, 1)', //comics
+                    'rgba(252, 167, 88, 1)', //anthologies
+                    'rgba(252, 206, 88, 1)', //feminism
+                    'rgba(252, 236, 88, 1)', //language
+                    'rgba(227, 252, 88, 1)', //fiction
+                    'rgba(192, 252, 88, 1)', //nonfiction
+                    'rgba(159, 252, 88, 1)', //health
+                    'rgba(104, 252, 88, 1)', //history
+                    'rgba(88, 252, 124, 1)', //hobbies
+                    'rgba(88, 252, 154, 1)', //law
+                    'rgba(88, 252, 186, 1)', //lgbt
+                    'rgba(88, 252, 241, 1)', //memoir
+                    'rgba(88, 238, 252, 1)', //self help
+                    'rgba(88, 216, 252, 1)', //mystery
+                    'rgba(88, 170, 252, 1)', //plays
+                    'rgba(88, 137, 252, 1)', //poetry
+                    'rgba(88, 96, 252, 1)', //puzzles
+                    'rgba(104, 88, 252, 1)', //reference
+                    'rgba(126, 88, 252, 1)', //religion
+                    'rgba(165, 88, 252, 1)', //romance
+                    'rgba(206, 88, 252, 1)', //sci-fi
+                    'rgba(247, 88, 252, 1)', //tech
+                    'rgba(252, 88, 238, 1)', //test
+                    'rgba(252, 88, 175, 1)', //western
+                    'rgba(252, 88, 126, 1)', //writing
+                ],
+                 borderWidth: 1
+            }, {
+                label: "Books in Library",
+                data: numHave,
+                backgroundColor: [
+                    'rgba(255, 88, 88, 1)', //classic
+                    'rgba(252, 132, 88, 1)', //comics
+                    'rgba(252, 167, 88, 1)', //anthologies
+                    'rgba(252, 206, 88, 1)', //feminism
+                    'rgba(252, 236, 88, 1)', //language
+                    'rgba(227, 252, 88, 1)', //fiction
+                    'rgba(192, 252, 88, 1)', //nonfiction
+                    'rgba(159, 252, 88, 1)', //health
+                    'rgba(104, 252, 88, 1)', //history
+                    'rgba(88, 252, 124, 1)', //hobbies
+                    'rgba(88, 252, 154, 1)', //law
+                    'rgba(88, 252, 186, 1)', //lgbt
+                    'rgba(88, 252, 241, 1)', //memoir
+                    'rgba(88, 238, 252, 1)', //self help
+                    'rgba(88, 216, 252, 1)', //mystery
+                    'rgba(88, 170, 252, 1)', //plays
+                    'rgba(88, 137, 252, 1)', //poetry
+                    'rgba(88, 96, 252, 1)', //puzzles
+                    'rgba(104, 88, 252, 1)', //reference
+                    'rgba(126, 88, 252, 1)', //religion
+                    'rgba(165, 88, 252, 1)', //romance
+                    'rgba(206, 88, 252, 1)', //sci-fi
+                    'rgba(247, 88, 252, 1)', //tech
+                    'rgba(252, 88, 238, 1)', //test
+                    'rgba(252, 88, 175, 1)', //western
+                    'rgba(252, 88, 126, 1)', //writing
+                ],
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            legend: {
+                display: false
+            }
+        }
+    });
+
+</script>
+
+
+{% endblock %}

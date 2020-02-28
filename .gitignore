@@ -102,3 +102,13 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+
+.idea
+.idea/
+.idea/books_thru_bars.iml
+.idea/misc.xml
+
+app/static/scripts/database/database.ini
+
+
