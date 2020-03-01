@@ -6,9 +6,7 @@ from app import app
 from app.forms import LoginForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
-from app.connect import connect
-
-import json
+from app.autocomp import get_titles
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -57,14 +55,7 @@ def ajaxautocomplete():
     result = ''
     if request.method == 'POST':
         query = request.form['query']
+        return get_titles(query)
 
-        try:
-            with connect().cursor() as cursor:
-                sql = "select title value from book where title like '%" + query + "%'"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-        finally:
-            a = 2
-        return json.dumps({"suggestions": result})
     else:
         return "ooops"
