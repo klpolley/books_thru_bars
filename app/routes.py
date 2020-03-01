@@ -1,11 +1,14 @@
 from flask import render_template, flash, redirect, url_for, request
-from flask_login import login_user, logout_user, current_user, login_required
+from flask_login import login_user, current_user
 from werkzeug.urls import url_parse
 
 from app import app
 from app.forms import LoginForm
-from app.static.scripts.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
-from app.static.scripts.login import get_user, check_password
+from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
+from app.login import get_user, check_password
+from app.connect import connect
+
+import json
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -43,3 +46,25 @@ def login():
         return redirect(next_page)
 
     return render_template('login.html', title='Sign In', form=form)
+
+
+@app.route('/test', methods=['POST', 'GET'])
+def test():
+    return render_template('test.html')
+
+@app.route('/ajaxautocomplete', methods=['POST', 'GET'])
+def ajaxautocomplete():
+    result = ''
+    if request.method == 'POST':
+        query = request.form['query']
+
+        try:
+            with connect().cursor() as cursor:
+                sql = "select title value from book where title like '%" + query + "%'"
+                cursor.execute(sql)
+                result = cursor.fetchall()
+        finally:
+            a = 2
+        return json.dumps({"suggestions": result})
+    else:
+        return "ooops"

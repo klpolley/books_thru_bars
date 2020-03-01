@@ -1,4 +1,5 @@
-from app.static.scripts.database.connect import connect, disconnect
+from app.connect import connect
+
 
 def retrieve_facilities():
     conn = connect()

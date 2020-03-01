@@ -1,4 +1,4 @@
-from app.static.scripts.database.connect import connect, disconnect
+from app.connect import connect
 from app import bcrypt
 
 from app import login
@@ -39,7 +39,6 @@ def get_user(username):
         user.set_id(data[0][0])
         user.set_user(data[0][1])
         user.set_password(data[0][2])
-
 
     return user
 

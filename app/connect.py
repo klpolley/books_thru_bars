@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 import sys
-from app.static.scripts.database.config import config
+from app.config import config
 
 
 def connect():
