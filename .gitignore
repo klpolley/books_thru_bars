@@ -111,4 +111,4 @@ venv.bak/
 
 app/static/scripts/database/database.ini
 
-
+app/setup_admin.py

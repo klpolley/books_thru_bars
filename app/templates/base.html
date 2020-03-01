@@ -32,6 +32,21 @@
 
     {% block page %}
 
+        <div class="container">
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <ul>
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                </ul>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+
+        </div>
+
         {% block content %} {% endblock %}
 
     {% endblock %}
