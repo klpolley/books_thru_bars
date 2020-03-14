@@ -6,7 +6,7 @@ from app import app
 from app.forms import LoginForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
-from app.autocomp import get_titles
+from app.autocomp import get_titles, get_all_titles
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -54,8 +54,9 @@ def test():
 def ajaxautocomplete():
     result = ''
     if request.method == 'POST':
-        query = request.form['query']
-        return get_titles(query)
+        # query = request.form['query']
+        # return get_titles(query)
+        return get_all_titles()
 
     else:
         return "ooops"

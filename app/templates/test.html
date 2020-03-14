@@ -6,13 +6,16 @@
 <head>
     <script src="../static/scripts/libraries/jquery/jquery.min.js"></script>
     <script src="../static/scripts/autocomplete.js"></script>
+    <link rel="stylesheet" href="../static/stylesheets/autocomp.css">
 
 </head>
 
+<form autocomplete="off" action="/action_page.php">
+  <div class="autocomplete" style="width:300px;">
+    <input id="myInput" type="text" name="myCountry" placeholder="Country">
+  </div>
+  <input type="submit">
+</form>
 
-<div class="frmSearch">
-<input type="text" id="search-box" placeholder="Title" />
-<div id="suggesstion-box"></div>
-</div>
 
 {% endblock %}

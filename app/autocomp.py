@@ -22,7 +22,6 @@ def get_titles(query):
     try:
         with connect().cursor() as cursor:
             q = query.replace("'", "^")
-            print(query)
             sql = "select title from book where title like UPPER('%" + q + "%')"
             cursor.execute(sql)
             data = cursor.fetchall()
@@ -32,3 +31,16 @@ def get_titles(query):
 
 
     return json.dumps({"suggestions": result})
+
+def get_all_titles():
+    result = []
+    try:
+        with connect().cursor() as cursor:
+            sql = "select title from book"
+            cursor.execute(sql)
+            data = cursor.fetchall()
+    finally:
+        for t in data:
+            result.append(proper_case(t[0].replace("^", "'")))
+
+    return json.dumps(result)
