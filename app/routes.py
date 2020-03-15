@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request
-from flask_login import login_user, current_user
+from flask_login import login_user, current_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app
@@ -45,18 +45,22 @@ def login():
 
     return render_template('login.html', title='Sign In', form=form)
 
+@app.route('/library/log-in', methods=['POST', 'GET'])
+def log_book_in():
+    titles = get_all_titles()
+    return render_template('bookin.html', books=titles)
+
+@app.route('/submitbook', methods=['POST', 'GET'])
+def submit_book():
+    return "oops"
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
     return render_template('test.html')
 
-@app.route('/ajaxautocomplete', methods=['POST', 'GET'])
+@app.route('/autocomp', methods=['POST', 'GET'])
 def ajaxautocomplete():
-    result = ''
     if request.method == 'POST':
-        # query = request.form['query']
-        # return get_titles(query)
         return get_all_titles()
-
     else:
-        return "ooops"
+        return "oops"

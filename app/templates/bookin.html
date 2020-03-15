@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+
+<head>
+    <script   src="https://code.jquery.com/jquery-3.4.1.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="   crossorigin="anonymous"></script>
+    <script src="../static/scripts/autocomplete.js"></script>
+    <link rel="stylesheet" href="../static/stylesheets/autocomp.css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- necessary script to execute jQuery code -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <!-- jQuery validation is not included in the script above, so needs to be explicitly included -->
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <!-- Bootstrap HTML framework -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Materialize CSS framework -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<form autocomplete="off" action="/submitbook" id="book-form" method="POST" enctype="text/plain">
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+    <div class="centered">
+
+        <div class="row">
+            <div class="input-field col s12 autocomplete">
+                <input type="text" class="validate" name="title" id="title-input" required/>
+                <label for="title-input">Title</label>
+                <span class="helper-text" data-error="Enter the book title here." data-success=""></span>
+            </div>
+        </div>
+
+        <p>Number of Authors</p>
+        <div class="btn-group btn-group-toggle centered" data-toggle="buttons" id="authselect">
+            <label class="btn btn-default active">
+                <input class="authnum" type="radio" name="numauth" id="option1" autocomplete="off" checked value="1"> 1
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numauth" id="option2" autocomplete="off" value="2"> 2
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numauth" id="option3" autocomplete="off" value="3"> 3
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numauth" id="various" autocomplete="off" value="VARIOUS"> 4+
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numauth" id="none" autocomplete="off" value="N/A"> N/A
+            </label>
+        </div>
+
+        <div id="authors">
+            <div class="row">
+                <div class="input-field col s12 autocomplete">
+                    <input type="text" class="validate" name ="title" id="author-input" required/>
+                    <label for="author-input">Author</label>
+                    <span class="helper-text" data-error="Enter the book author here." data-success=""></span>
+                </div>
+            </div>
+        </div>
+
+        <select id="genre" name="genre"> </select>
+
+        <div class="row">
+            <div class="input-field col s12">
+                <button class="waves-effect waves-light btn centered" id="contact-form-button" type="submit">submit</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</form>
+
+<script>
+    var data = {{ books | tojson }}
+    titles = JSON.parse(data);
+    autocomplete(document.getElementById("title-input"), titles);
+</script>
+<script src="../static/scripts/authorin.js"></script>
+
+
+{% endblock %}

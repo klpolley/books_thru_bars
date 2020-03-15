@@ -1,17 +1,3 @@
-$(document).ready(function(){
-	$.ajax({
-	type: "POST",
-	url: "/ajaxautocomplete",
-	data: {
-
-	},
-	success: function(data){
-		titles = JSON.parse(data);
-		autocomplete(document.getElementById("myInput"), titles);
-	}
-	});
-});
-
 function autocomplete(inp, arr) {
 	/*the autocomplete function takes two arguments,
 	the text field element and an array of possible autocompleted values:*/

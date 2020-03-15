@@ -44,3 +44,4 @@ def get_all_titles():
             result.append(proper_case(t[0].replace("^", "'")))
 
     return json.dumps(result)
+
