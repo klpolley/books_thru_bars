@@ -6,7 +6,7 @@ from app import app
 from app.forms import LoginForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
-from app.autocomp import get_all_titles, get_all_authors, get_all_editors
+from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -50,7 +50,8 @@ def log_book_in():
     titles = get_all_titles()
     authors = get_all_authors()
     editors = get_all_editors()
-    return render_template('bookin.html', books=titles, auths=authors, edits=editors)
+    genres = get_genres()
+    return render_template('bookin.html', books=titles, auths=authors, edits=editors, gens=genres)
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():

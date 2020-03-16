@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    console.log($("input[name='numauth']:checked").val());
 
     $('#authselect').click(function() {
         //make sure value updates before retrieving
@@ -80,5 +79,16 @@ $(document).ready(function() {
             autocomplete(elements[i], editors);
         }
     }
+
+    $('#genre').change(function() {
+
+        var dot = document.getElementById("sticker");
+        var selector = document.getElementById("genre");
+        var label = document.getElementById("label");
+
+        dot.style = "background-color:" + colors[genres[selector.value][0]];
+        label.innerHTML = genres[selector.value][1]
+
+    });
 
 });

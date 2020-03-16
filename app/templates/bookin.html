@@ -32,6 +32,8 @@
 
     <div class="centered">
 
+        <h4>Add Book To Library</h4>
+
         <div class="row">
             <div class="input-field col s12 autocomplete">
                 <input type="text" class="validate" name="title" id="title-input" required/>
@@ -40,7 +42,7 @@
             </div>
         </div>
 
-        <p>Number of Authors</p>
+        <p>Author(s)</p>
         <div class="btn-group btn-group-toggle centered" data-toggle="buttons" id="authselect">
             <label class="btn btn-default active">
                 <input class="authnum" type="radio" name="numauth" id="option1" autocomplete="off" checked value="1"> 1
@@ -69,7 +71,7 @@
             </div>
         </div>
 
-        <p>Number of Editors</p>
+        <p>Editor(s)</p>
         <div class="btn-group btn-group-toggle centered" data-toggle="buttons" id="edselect">
             <label class="btn btn-default active">
                 <input class="authnum" type="radio" name="numedit" id="opt0" autocomplete="off" checked value="0"> 0
@@ -90,8 +92,19 @@
 
         <div id="editors"></div>
 
+        <br>
+        <br>
         <div class="row">
-            <select id="genre" name="genre"> </select>
+            <div class="input-field col s12">
+                <span class="dot centered" id="sticker">
+                    <p id="label" style="font-size: 25px; text-indent: 10px"></p>
+                </span>
+                <select id="genre" name="genre" class="selectpicker browser-default">
+                    <option value="" disabled selected>Select Genre</option>
+                </select>
+
+            </div>
+
         </div>
 
 
@@ -116,6 +129,9 @@
     data = {{ edits | tojson }}
     editors = JSON.parse(data);
 
+    data = {{ gens | tojson }}
+    genres = JSON.parse(data);
+
     autocomplete(document.getElementById("title-input"), titles);
 
     elements = document.getElementsByClassName("authors");
@@ -123,8 +139,25 @@
         autocomplete(elements[i], authors);
     }
 
+    var colors = {
+        "Red": '#ff1111',
+        "Purple": '#aa00ff',
+        "Yellow": '#ffff00',
+        "Blue": '#00ffff',
+        "Green": '#00ff00'
+    };
+
+    var keys = Object.keys(genres);
+    for (var i=0; i < keys.length; i++) {
+        var key = keys[i];
+        console.log(key);
+        var html =  "<option value='"+key+"'>"+key+"</option>";
+
+        document.getElementById("genre").innerHTML += html;
+    }
+
 </script>
-<script src="../static/scripts/authorin.js"></script>
+<script src="../static/scripts/bookin.js"></script>
 
 
 {% endblock %}
