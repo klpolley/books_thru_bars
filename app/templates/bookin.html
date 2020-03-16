@@ -62,14 +62,38 @@
         <div id="authors">
             <div class="row">
                 <div class="input-field col s12 autocomplete">
-                    <input type="text" class="validate" name ="title" id="author-input" required/>
+                    <input type="text" class="validate authors" name ="title" id="author-input" required/>
                     <label for="author-input">Author</label>
                     <span class="helper-text" data-error="Enter the book author here." data-success=""></span>
                 </div>
             </div>
         </div>
 
-        <select id="genre" name="genre"> </select>
+        <p>Number of Editors</p>
+        <div class="btn-group btn-group-toggle centered" data-toggle="buttons" id="edselect">
+            <label class="btn btn-default active">
+                <input class="authnum" type="radio" name="numedit" id="opt0" autocomplete="off" checked value="0"> 0
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numedit" id="opt1" autocomplete="off" value="1"> 1
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numedit" id="opt2" autocomplete="off" value="2"> 2
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numedit" id="opt3" autocomplete="off" value="3"> 3
+            </label>
+            <label class="btn btn-default">
+                <input class="authnum" type="radio" name="numedit" id="opt4" autocomplete="off" value="VARIOUS"> 4+
+            </label>
+        </div>
+
+        <div id="editors"></div>
+
+        <div class="row">
+            <select id="genre" name="genre"> </select>
+        </div>
+
 
         <div class="row">
             <div class="input-field col s12">
@@ -85,7 +109,20 @@
 <script>
     var data = {{ books | tojson }}
     titles = JSON.parse(data);
+
+    data = {{ auths | tojson }}
+    authors = JSON.parse(data);
+
+    data = {{ edits | tojson }}
+    editors = JSON.parse(data);
+
     autocomplete(document.getElementById("title-input"), titles);
+
+    elements = document.getElementsByClassName("authors");
+    for (var i = 0; i < elements.length; i++) {
+        autocomplete(elements[i], authors);
+    }
+
 </script>
 <script src="../static/scripts/authorin.js"></script>
 

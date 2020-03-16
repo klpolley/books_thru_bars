@@ -45,3 +45,28 @@ def get_all_titles():
 
     return json.dumps(result)
 
+def get_all_authors():
+    result = []
+    try:
+        with connect().cursor() as cursor:
+            sql = "select name from author where name not like 'VARIOUS' and name not like 'N/A'"
+            cursor.execute(sql)
+            data = cursor.fetchall()
+    finally:
+        for t in data:
+            result.append(proper_case(t[0].replace("^", "'")))
+
+    return json.dumps(result)
+
+def get_all_editors():
+    result = []
+    try:
+        with connect().cursor() as cursor:
+            sql = "select name from editor"
+            cursor.execute(sql)
+            data = cursor.fetchall()
+    finally:
+        for t in data:
+            result.append(proper_case(t[0].replace("^", "'")))
+
+    return json.dumps(result)
