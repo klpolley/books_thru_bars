@@ -4,27 +4,31 @@
     <html>
         <head>
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
             <style>
-                @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap');
-                header {
-                    width: 100%;
-                    height: 922px
-                }
                 h1, h2, h3, h4, h5, h6 {
-                    font-family: 'Raleway';
+                    font-family: 'Raleway',sans-serif;
                 }
                 p {
-                    font-family: 'Montserrat';
+                    font-family: 'Montserrat', serif;
+                    font-size: 20px;
                 }
                 body {
                     background-color: #E7E7E7;
+                }
+                .big_p {
+                    font-size: 30px;
+                }
+                .social:hover {
+                    cursor: pointer;
                 }
             </style>
         </head>
         <body>
             <div class="row">
                 <div class="col-md-12">
-                    <header class="intro-header" style="background-image: url({{ url_for('static', filename='images/background_photo.jpg') }})"
+                    <header>
+                        <img src="{{url_for('static', filename='images/header_image.jpg')}}" width="100%">
                     </header>
                 </div>
             </div>
@@ -38,7 +42,7 @@
                         <br />
                         <br />
                         <h1>Our Mission</h1>
-                        <h3>We believe that everyone has the right to literacy and an education. The mission of IC Books Thru Bars is to maintain an operational program which sends reading literature to incarcerated individuals as well as raise awareness of issues related to incarceration.</h3>
+                        <p>We believe that everyone has the right to literacy and an education. The mission of IC Books Thru Bars is to maintain an operational program which sends reading literature to incarcerated individuals as well as raise awareness of issues related to incarceration.</p>
                         <br />
                         <br />
                         <br />
@@ -48,35 +52,48 @@
                 <div class="col-md-2">
                 </div>
             </div>
-        <div class="row" style="background-color: #177199;">
+        <div class="row" style="background-color: #042440;">
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
-                <div style="text-align:center; color: white">
-                    <h2>Upcoming Events!</h2>
+                <div style="text-align:center; color: white; padding: 10px">
+                    <h1>Upcoming Events!</h1>
                     <br />
-                    <iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=cHBudHVhcDdycjcxNTBmZWg0YnN2ZWszYTBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23009688&amp;mode=AGENDA&amp;showNav=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=1" style="border:solid 1px #777" width="400" height="500" frameborder="0" scrolling="no"></iframe>
+                    <iframe src="https://calendar.google.com/calendar/b/2/embed?height=500&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FNew_York&amp;src=cHBudHVhcDdycjcxNTBmZWg0YnN2ZWszYTBAZ3JvdXAuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&amp;color=%23009688&amp;mode=AGENDA&amp;showTitle=1&amp;showNav=0&amp;showDate=1&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0" style="border-width:0" width="350" height="500" frameborder="0" scrolling="no"></iframe>
                     <br />
                 </div>
             </div>
             <div class="col-md-1">
             </div>
             <div class="col-md-4">
-                <div style="text-align:center; color: white">
-                    <h2>Contact Us!</h2>
+                <div style="text-align:center; color: white; padding: 10px">
+                    <h1>Contact Us!</h1>
+                    <br />
+                    <h3>To <strong>request</strong> a package or to send <strong>donations</strong>, please address to:</h3>
+                    <p class="big_p">IC Books Thru Bars</p>
+                    <p class="big_p">P.O. Box 113</p>
+                    <p class="big_p">Brooktondale, NY</p>
+                    <p class="big_p">14817</p>
+                    <br />
+                    <h3>To reach us for any other reason, including interest in donating, send us an <strong>email</strong> at:</h3>
+                    <p style="font-size: 25px">booksthrubars@gmail.com</p>
                     <br />
                 </div>
             </div>
             <div class="col-md-1">
             </div>
         </div>
-        <div class="row" style="background-color: #30799B;">
+        <div class="row" style="background-color: #143F59;">
             <div class="col-md-12">
-                <div style="text-align:center; color: white">
+                <div style="color: white; padding: 10px">
                     <br />
-                    <br />
-                    <h2>Footer lol</h2>
-                    <br />
+                    <img src="{{url_for('static', filename='images/email_icon.jpg')}}" width="50px"> booksthrubars@gmail.com&nbsp;
+                    <a href="https://www.instagram.com/icbooksthrubars/?hl=en" target="_blank">
+                        <img src="{{url_for('static', filename='images/instagram_icon.jpg')}}" width="50px" class="social">
+                    </a> icbooksthrubars
+                    <a href="https://www.facebook.com/ICBTB/" target="_blank">
+                        <img src="{{url_for('static', filename='images/facebook_logo.jpg')}}" width="50px" class="social">
+                    </a> IC Books Thru Bars
                     <br />
                 </div>
             </div>

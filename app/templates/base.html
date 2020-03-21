@@ -6,14 +6,14 @@
 
 {% block navbar %}
 <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
             <style>
-                @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap');
                 .nav_font {
                     font-family: 'Montserrat';
                     color: black;
                     position: relative;
-                    top: 10px;
+                    top: 17px;
                 }
             </style>
 </head>
@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href = "{{ url_for('index') }}">
-                    <img src="{{url_for('static', filename='btb_logo.png')}}" width="40px" class="d-inline-block align-top" alt="Books Thru Bars">
+                    <img src="{{url_for('static', filename='images/btb_logo.png')}}" width="55px" class="d-inline-block align-top" alt="Books Thru Bars">
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -36,6 +36,9 @@
                     <li><a href="{{ url_for('index') }}" class="nav_font">What We Do</a></li>
                     <li><a href="{{ url_for('index') }}" class="nav_font">Calendar</a></li>
                     <li><a href="{{ url_for('index') }}" class="nav_font">Contact Us</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}" class="nav_font">Login</a></li>
                 </ul>
             </div>
         </div>
