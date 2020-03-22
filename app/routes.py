@@ -10,6 +10,12 @@ from app.static.scripts.get_data import get_ithaca, retrieve_facilities, retriev
 def index():
     return render_template('index.html', title='Home')
 
+
+@app.route('/calendar', methods=['GET', 'POST'])
+def calendar():
+    return render_template('calendar.html', title='Calendar')
+
+
 @app.route('/map', methods=['GET', 'POST'])
 def map():
     facilities = retrieve_facilities()
