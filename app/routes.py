@@ -13,6 +13,10 @@ from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, 
 def index():
     return render_template('index.html', title='Home')
 
+@app.route('/calendar', methods=['GET', 'POST'])
+def calendar():
+    return render_template('calendar.html', title='Calendar')
+
 @app.route('/what-we-do', methods=['GET', 'POST'])
 def data():
     facilities = retrieve_facilities()

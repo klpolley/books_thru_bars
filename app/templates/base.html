@@ -1,36 +1,50 @@
-<head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-</head>
-
 {% extends 'bootstrap/base.html' %}
 
-    {% block title %}
-        IC Books Thru Bars
-    {% endblock %}
+{% block title %}
+    IC Books Thru Bars
+{% endblock %}
 
-
-    {% block navbar %}
-        <nav class="navbar navbar-light" style="background-color: #ffffff00;">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href = "{{ url_for('index') }}">
-                        <img src="{{url_for('static', filename='images/btb_logo.png')}}" width="40px" class="d-inline-block align-top" alt="Books Thru Bars">
-                    </a>
-                    <a class="navbar-brand" href = "{{ url_for('data') }}">
-                        What We Do
-                    </a>
-                </div>
+{% block navbar %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+            <style>
+                .nav_font {
+                    font-family: 'Montserrat';
+                    color: black;
+                    position: relative;
+                    top: 17px;
+                }
+            </style>
+</head>
+<body>
+    <nav class="navbar navbar-light" style="background-color: #E7E7E7;">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href = "{{ url_for('index') }}">
+                    <img src="{{url_for('static', filename='images/btb_logo.png')}}" width="55px" class="d-inline-block align-top" alt="Books Thru Bars">
+                </a>
             </div>
-        </nav>
-    {% endblock %}
-
-    {% block page %}
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}" class="nav_font">What We Do</a></li>
+                    <li><a href="{{ url_for('calendar') }}" class="nav_font">Calendar</a></li>
+                    <li><a href="{{ url_for('index') }}" class="nav_font">Contact Us</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}" class="nav_font">Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    </body>
+{% endblock %}
 
         <div class="container">
 
@@ -49,4 +63,4 @@
 
         {% block content %} {% endblock %}
 
-    {% endblock %}
+
