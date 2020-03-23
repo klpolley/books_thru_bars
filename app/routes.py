@@ -16,6 +16,11 @@ def calendar():
     return render_template('calendar.html', title='Calendar')
 
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    return render_template('contact.html', title='Contact Us')
+
+
 @app.route('/map', methods=['GET', 'POST'])
 def map():
     facilities = retrieve_facilities()
