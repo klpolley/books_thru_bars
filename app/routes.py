@@ -2,6 +2,8 @@ from flask import render_template, flash, redirect, url_for, request
 
 from app import app
 
+from app.forms import ContactForm
+
 from app.static.scripts.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 
 
@@ -18,7 +20,8 @@ def calendar():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    return render_template('contact.html', title='Contact Us')
+    form = ContactForm
+    return render_template('contact.html', title='Contact Us', form=form)
 
 
 @app.route('/map', methods=['GET', 'POST'])
