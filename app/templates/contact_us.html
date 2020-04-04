@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block app_content %}
+    <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+            <style>
+                h1, h2, h3, h4, h5, h6 {
+                    font-family: 'Raleway',sans-serif;
+                }
+                p {
+                    font-family: 'Montserrat', serif;
+                    font-size: 20px;
+                }
+                body {
+                    background-color: #E7E7E7;
+                }
+                .social:hover {
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="row" style="background-color: #042440;">
+                <h1>Contact Form</h1>
+                {% if success %}
+                    <p>Thank you for your message. We'll get back to you shortly.</p>
+
+                {% else %}
+                {% for message in get_flashed_messages() %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {{ form.name.label }}
+                    {{ form.name }}
+
+                    {{ form.email.label }}
+                    {{ form.email }}
+
+                    {{ form.message.label }}
+                    {{ form.message }}
+
+                    {{ form.submit }}
+                </form>
+                {% endif %}
+            </div>
+        <div class="row" style="background-color: #143F59;">
+            <div class="col-md-12">
+                <div style="color: white; padding: 10px">
+                    <br />
+                    <img src="{{url_for('static', filename='images/email_icon.jpg')}}" width="50px"> booksthrubars@gmail.com&nbsp;
+                    <a href="https://www.instagram.com/icbooksthrubars/?hl=en" target="_blank">
+                        <img src="{{url_for('static', filename='images/instagram_icon.jpg')}}" width="50px" class="social">
+                    </a> icbooksthrubars
+                    <a href="https://www.facebook.com/ICBTB/" target="_blank">
+                        <img src="{{url_for('static', filename='images/facebook_logo.jpg')}}" width="50px" class="social">
+                    </a> IC Books Thru Bars
+                    <br />
+                </div>
+            </div>
+        </div>
+        </body>
+{% endblock %}

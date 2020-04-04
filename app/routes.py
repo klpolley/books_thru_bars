@@ -1,6 +1,8 @@
 from flask import render_template, flash, redirect, url_for, request
 
-from app import app
+from flask_mail import Message
+
+from app import app, mail
 
 from app.forms import ContactForm
 
@@ -20,8 +22,19 @@ def calendar():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    form = ContactForm
-    return render_template('contact.html', title='Contact Us', form=form)
+    form = ContactForm()
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('contact.html', form=form)
+        else:
+            msg = Message(form.subject.data, sender='smtp.googlemail.com', recipients=["booksthrubars@gmail.com"])
+            msg.body = form.message.data, " from ", form.email.data
+            msg.html = html_body
+            mail.send(msg)
+            return render_template('contact.html', success=True)
+    else:
+        return render_template('contact_us.html', title='Contact Us', form=form)
 
 
 @app.route('/map', methods=['GET', 'POST'])
@@ -31,10 +44,12 @@ def map():
 
     return render_template('map.html', title="Map", facilities = facilities, ithaca = ithaca)
 
+
 @app.route('/chart', methods=['GET', 'POST'])
 def charts():
     library, sent = retrieve_genres()
     return render_template('charts.html', title="Charts", library=library, sent=sent)
+
 
 @app.route('/what-we-do', methods=['GET', 'POST'])
 def data():
