@@ -8,10 +8,13 @@
             <style>
                 h1, h2, h3, h4, h5, h6 {
                     font-family: 'Raleway',sans-serif;
+                    text-align: center;
+                    color: white;
                 }
                 p {
                     font-family: 'Montserrat', serif;
                     font-size: 20px;
+                    color: white;
                 }
                 body {
                     background-color: #E7E7E7;
@@ -19,33 +22,100 @@
                 .social:hover {
                     cursor: pointer;
                 }
+                form label {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    display: block;
+                    color: white;
+                    padding: 10px;
+                }
+
+                form input#name,
+                form input#email {
+                    width: 400px;
+                    font-size: 1.1em;
+                    padding: 10px;
+                }
+
+                form textarea#message {
+                    width: 500px;
+                    height: 100px;
+                    font-size: 1.1em;
+                    padding: 10px;
+                }
+
+                form input#submit {
+                    display: block;
+                    border-radius: 3px;
+                    border:1px solid #d8d8d8;
+                    font-weight:bold;
+                    text-align: center;
+                    background-color: #f4f4f4;
+                    padding: 10px;
+                }
+
+                form input#submit:hover{
+                    cursor: pointer;
+                    background-color: #dbdbdb;
+                }
+                .flash {
+                    background-color: #BB1B0D;
+                    padding: 10px;
+                    width: 400px;
+                    color: white;
+                }
             </style>
         </head>
         <body>
-            <div class="row" style="background-color: #042440;">
-                <h1>Contact Form</h1>
-                {% if success %}
-                    <p>Thank you for your message. We'll get back to you shortly.</p>
+            <div class="row" style="background-color: #11557C;">
+                <div class="col-md-2 col-sm-2">
+                </div>
+                <div class="col-md-8 col-sm-8">
+                    <br />
+                    <br />
+                    <br />
+                    <h1>Contact Us!</h1>
+                    {% if success %}
+                        <p>Thank you for your message. We'll get back to you shortly.</p>
 
-                {% else %}
-                {% for message in get_flashed_messages() %}
-                    <div class="flash">{{ message }}</div>
-                {% endfor %}
-                <form action="" method="post" novalidate>
-                    {{ form.hidden_tag() }}
+                    {% else %}
+                        {% for message in get_flashed_messages() %}
+                            <div class="flash">{{ message }}</div>
+                        {% endfor %}
+                         <form action="" method="post" novalidate>
+                            {{ form.hidden_tag() }}
 
-                    {{ form.name.label }}
-                    {{ form.name }}
+                             <p>
+                                {{ form.name.label }}
+                                {{ form.name }}
+                             </p>
 
-                    {{ form.email.label }}
-                    {{ form.email }}
+                             <p>
+                                {{ form.email.label }}
+                                {{ form.email }}
+                             </p>
 
-                    {{ form.message.label }}
-                    {{ form.message }}
+                             <p>
+                                {{ form.message.label }}
+                                {{ form.message }}
+                             </p>
 
-                    {{ form.submit }}
-                </form>
-                {% endif %}
+                             {{ form.submit }}
+                        </form>
+                    {% endif %}
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                </div>
+                <div class="col-md-2 col-sm-2">
+                </div>
             </div>
         <div class="row" style="background-color: #143F59;">
             <div class="col-md-12">

@@ -26,13 +26,12 @@ def contact():
     if request.method == 'POST':
         if form.validate() == False:
             flash('All fields are required.')
-            return render_template('contact.html', form=form)
+            return render_template('contact_us.html', form=form)
         else:
-            msg = Message(form.subject.data, sender='smtp.googlemail.com', recipients=["booksthrubars@gmail.com"])
+            msg = Message("Message from Website", sender='smtp.googlemail.com', recipients=["booksthrubars@gmail.com"])
             msg.body = form.message.data, " from ", form.email.data
-            msg.html = html_body
             mail.send(msg)
-            return render_template('contact.html', success=True)
+            return render_template('contact_us.html', success=True)
     else:
         return render_template('contact_us.html', title='Contact Us', form=form)
 
