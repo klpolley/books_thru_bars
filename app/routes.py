@@ -8,6 +8,8 @@ from app.forms import ContactForm
 
 from app.static.scripts.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 
+from app.email import send_email
+
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
@@ -24,13 +26,11 @@ def calendar():
 def contact():
     form = ContactForm()
     if request.method == 'POST':
-        if form.validate() == False:
+        if not form.validate():
             flash('All fields are required.')
             return render_template('contact_us.html', form=form)
         else:
-            msg = Message("Message from Website", sender='smtp.googlemail.com', recipients=["booksthrubars@gmail.com"])
-            msg.body = form.message.data, " from ", form.email.data
-            mail.send(msg)
+            send_email(name=form.name.data, email=form.email.data, message=form.message.data)
             return render_template('contact_us.html', success=True)
     else:
         return render_template('contact_us.html', title='Contact Us', form=form)
