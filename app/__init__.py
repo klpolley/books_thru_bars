@@ -20,5 +20,6 @@ app.config["MAIL_PASSWORD"] = 'angler$$'
 mail = Mail(app)
 
 
-from app import routes
+from app import routes, errors
+
 
