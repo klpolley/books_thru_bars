@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+            <style>
+                h1 {
+                    text-align: center;
+                    font-family: 'Raleway',sans-serif;
+                }
+                p, a {
+                    text-align: center;
+                    font-family: 'Montserrat', serif;
+                    color: white;
+                }
+                a:hover {
+                    color: white;
+                    cursor: pointer;
+                }
+                body {
+                    background-color: #E7E7E7;
+                }
+                .social:hover {
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="row" style="background-color: #657D8C">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-8">
+                    <div style="text-align:center; color: white">
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <h1>An unexpected error has occurred</h1>
+                        <p>The administrator has been notified. Sorry for the inconvenience!</p>
+                        <p><a href="{{ url_for('index') }}">Back</a></p>
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        <div class="row" style="background-color: #143F59;">
+            <div class="col-md-12">
+                <div style="color: white; padding: 10px">
+                    <br />
+                    <img src="{{url_for('static', filename='images/email_icon.jpg')}}" width="50px"> booksthrubars@gmail.com&nbsp;
+                    <a href="https://www.instagram.com/icbooksthrubars/?hl=en" target="_blank">
+                        <img src="{{url_for('static', filename='images/instagram_icon.jpg')}}" width="50px" class="social">
+                    </a> icbooksthrubars
+                    <a href="https://www.facebook.com/ICBTB/" target="_blank">
+                        <img src="{{url_for('static', filename='images/facebook_logo.jpg')}}" width="50px" class="social">
+                    </a> IC Books Thru Bars
+                    <br />
+                </div>
+            </div>
+        </div>
+        </body>
+    </html>
+{% endblock %}
