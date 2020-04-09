@@ -1,19 +1,21 @@
-$('#contact-form-button').click(function(event){
-    // Prevent redirection with AJAX for contact form
-    var form = $('#contact-form');
-    var form_id = 'contact-form';
-    var url = form.prop('action');
+
+function submitForm() {
+    var form = $('#book-form');
+    var form_id = 'book-form';
+    var url = "/submitbook";
     var type = form.prop('method');
-    var formData = getContactFormData(form_id);
+    var formData = getBookFormData(form_id);
+
+    console.log(formData);
 
     // submit form via AJAX
     send_form(form, form_id, url, type, modular_ajax, formData);
-});
+}
 
-function getContactFormData(form) {
+function getBookFormData(form) {
     // creates a FormData object and adds chips text
     var formData = new FormData(document.getElementById(form));
-//    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
+    for (var [key, value] of formData.entries()) { console.log('formData', key, value);}
     return formData
 }
 
@@ -51,7 +53,7 @@ function send_form(form, form_id, url, type, inner_ajax, formData) {
             }
         }
         else {
-            M.toast({html: "Another error occured, please try again.", classes: 'bg-danger text-white'});
+            M.toast({html: "Another error occurred, please try again.", classes: 'bg-danger text-white'});
         }
     }
 }
@@ -68,3 +70,49 @@ function isFormDataEmpty(formData) {
     }
     return true;
 }
+
+function modular_ajax(url, type, formData) {
+    // Most simple modular AJAX building block
+    $.ajax({
+        url: url,
+        type: type,
+        data: formData,
+        processData: false,
+        contentType: false,
+        beforeSend: function() {
+            // show the preloader (progress bar)
+            $('#form-response').html("<div class='progress'><div class='indeterminate'></div></div>");
+        },
+        complete: function () {
+            // hide the preloader (progress bar)
+            $('#form-response').html("");
+        },
+        success: function ( data ){
+            if ( !$.trim( data.feedback )) { // response from Flask is empty
+                toast_error_msg = "An empty response was returned.";
+                toast_category = "danger";
+            }
+            else { // response from Flask contains elements
+                toast_error_msg = data.feedback;
+                toast_category = data.category;
+            }
+        },
+        error: function(xhr) {console.log("error. see details below.");
+            console.log(xhr.status + ": " + xhr.responseText);
+            toast_error_msg = "An error occured";
+            toast_category = "danger";
+        },
+    }).done(function() {
+        M.toast({html: toast_error_msg, classes: 'bg-' +toast_category+ ' text-white'});
+    });
+};
+
+var csrf_token = "{{ csrf_token() }}";
+
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrf_token);
+        }
+    }
+});

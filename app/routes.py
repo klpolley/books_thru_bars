@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, current_user, login_required
 from werkzeug.urls import url_parse
 
-from app import app, mail
+from app import app, mail, csrf
 from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
@@ -90,7 +90,7 @@ def log_book_in():
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():
-    return "oops"
+    return render_template('index.html')
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
