@@ -7,6 +7,7 @@ from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
+from app.book_submit import submit_book
 from flask_mail import Message
 from app.email import send_email
 
@@ -90,9 +91,33 @@ def log_book_in():
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():
-    print(request.form)
-    resp = {'feedback': 'book submitted!', 'category': 'success'}
-    return make_response(jsonify(resp), 200)
+    data = request.form.to_dict()
+
+    title = ''
+    authors = []
+    editors = []
+    genre = ''
+    num = 1
+
+    for entry in data:
+        if entry == 'title':
+            title = data[entry].upper().replace("'", "^")
+        if entry == 'author':
+            authors.append(data[entry].upper().replace("'", "^"))
+        if entry == 'editor':
+            editors.append(data[entry].upper().replace("'", "^"))
+        if entry == 'genre':
+            genre = data[entry]
+        if entry == 'quantity':
+            num = data[entry]
+
+    try:
+        submit_book(title, authors, editors, genre, num)
+        resp = {'feedback': 'book submitted!', 'category': 'success'}
+        return make_response(jsonify(resp), 200)
+    except:
+        resp = {'feedback': 'error, book not submitted', 'category': 'failure'}
+        return make_response(jsonify(resp), 200)
 
 @app.route('/test', methods=['POST', 'GET'])
 def test():
