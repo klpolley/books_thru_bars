@@ -1,7 +1,7 @@
 import sys
 from psycopg2 import Error, DatabaseError
 
-from app.static.scripts.database.connect import connect, disconnect
+from app.connect import connect, disconnect
 from data_import.read_csv import read_prison_csv
 
 
