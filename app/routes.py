@@ -94,11 +94,7 @@ def log_book_in():
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():
 
-    print(request.form)
-
     data = request.form.to_dict()
-
-    print(data)
 
     title = ''
     authors = []
@@ -106,12 +102,12 @@ def submit_book():
     genre = ''
     num = 1
 
-    for entry in request.form:
+    for entry in data:
         if entry == 'title':
             title = data[entry].upper().replace("'", "^")
-        elif entry == 'author':
+        elif entry in ['author1', 'author2', 'author3']:
             authors.append(data[entry].upper().replace("'", "^"))
-        elif entry == 'editor':
+        elif entry in ['editor1', 'editor2', 'editor3']:
             editors.append(data[entry].upper().replace("'", "^"))
         elif entry == 'genre':
             genre = data[entry]
@@ -126,14 +122,8 @@ def submit_book():
             if data[entry] == 'VARIOUS':
                 editors = ['VARIOUS']
 
-    print(title)
-    print(authors)
-    print(editors)
-    print(genre)
-    print(num)
-
     try:
-        #submit(title, authors, editors, genre, num)
+        submit(title, authors, editors, genre, num)
         resp = {'feedback': 'book submitted!', 'category': 'success'}
         return make_response(jsonify(resp), 200)
     except Error as e:
