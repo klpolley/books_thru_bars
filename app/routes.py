@@ -93,7 +93,12 @@ def log_book_in():
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():
+
+    print(request.form)
+
     data = request.form.to_dict()
+
+    print(data)
 
     title = ''
     authors = []
@@ -101,17 +106,25 @@ def submit_book():
     genre = ''
     num = 1
 
-    for entry in data:
+    for entry in request.form:
         if entry == 'title':
             title = data[entry].upper().replace("'", "^")
-        if entry == 'author':
+        elif entry == 'author':
             authors.append(data[entry].upper().replace("'", "^"))
-        if entry == 'editor':
+        elif entry == 'editor':
             editors.append(data[entry].upper().replace("'", "^"))
-        if entry == 'genre':
+        elif entry == 'genre':
             genre = data[entry]
-        if entry == 'quantity':
+        elif entry == 'quantity':
             num = data[entry]
+        elif entry == 'numauth':
+            if data[entry] == 'VARIOUS':
+                authors = ['VARIOUS']
+            elif data[entry] == 'N/A':
+                authors = ['N/A']
+        elif entry == 'numedit':
+            if data[entry] == 'VARIOUS':
+                editors = ['VARIOUS']
 
     print(title)
     print(authors)
