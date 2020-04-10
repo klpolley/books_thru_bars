@@ -95,7 +95,7 @@ function modular_ajax(url, type, formData) {
             else { // response from Flask contains elements
                 toast_error_msg = data.feedback;
                 toast_category = data.category;
-                setTimeout(function(){window.location.reload();},10);
+                setTimeout(function(){window.location.reload();},5);
             }
         },
         error: function(xhr) {console.log("error. see details below.");

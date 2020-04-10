@@ -7,9 +7,11 @@ from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
-from app.book_submit import submit_book
+from app.book_submit import submit
 from flask_mail import Message
 from app.email import send_email
+
+from psycopg2 import Error
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -111,11 +113,18 @@ def submit_book():
         if entry == 'quantity':
             num = data[entry]
 
+    print(title)
+    print(authors)
+    print(editors)
+    print(genre)
+    print(num)
+
     try:
-        submit_book(title, authors, editors, genre, num)
+        #submit(title, authors, editors, genre, num)
         resp = {'feedback': 'book submitted!', 'category': 'success'}
         return make_response(jsonify(resp), 200)
-    except:
+    except Error as e:
+        print(f'Error {e}')
         resp = {'feedback': 'error, book not submitted', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
 
