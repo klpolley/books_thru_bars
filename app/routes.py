@@ -19,9 +19,16 @@ from psycopg2 import Error
 def index():
     return render_template('index.html', title='Home')
 
+
+@app.route('/whatWeDo', methods=['GET', 'POST'])
+def whatWeDo():
+    return render_template('whatWeDo.html', title='What We Do')
+
+
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     return render_template('calendar.html', title='Calendar')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
