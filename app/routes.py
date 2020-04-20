@@ -22,7 +22,13 @@ def index():
 
 @app.route('/whatWeDo', methods=['GET', 'POST'])
 def whatWeDo():
-    return render_template('whatWeDo.html', title='What We Do')
+    facilities = retrieve_facilities()
+    ithaca = get_ithaca()
+    library, sent = retrieve_genres()
+    mailings = retrieve_mailings()
+
+    return render_template('whatWeDo.html', title="What We Do",
+                           facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
 
 
 @app.route('/calendar', methods=['GET', 'POST'])
