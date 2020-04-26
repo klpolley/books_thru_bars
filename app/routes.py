@@ -19,9 +19,22 @@ from psycopg2 import Error
 def index():
     return render_template('index.html', title='Home')
 
+
+@app.route('/whatWeDo', methods=['GET', 'POST'])
+def whatWeDo():
+    facilities = retrieve_facilities()
+    ithaca = get_ithaca()
+    library, sent = retrieve_genres()
+    mailings = retrieve_mailings()
+
+    return render_template('whatWeDo.html', title="What We Do",
+                           facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
+
+
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     return render_template('calendar.html', title='Calendar')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
