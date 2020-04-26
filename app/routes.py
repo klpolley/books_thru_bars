@@ -8,6 +8,7 @@ from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retri
 from app.login import get_user, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
 from app.book_submit import submit
+from app.library import get_books, select_sent, select_have
 from flask_mail import Message
 from app.email import send_email
 
@@ -82,6 +83,14 @@ def login():
         return redirect(next_page)
 
     return render_template('login.html', title='Sign In', form=form)
+
+
+@app.route('/library', methods=['GET'])
+def library():
+    books = get_books(select_have())
+    return render_template('library.html', books=books)
+
+@app.route('/library/sent', methods=['GET'])
 
 @app.route('/library/log-in', methods=['POST', 'GET'])
 def log_book_in():
