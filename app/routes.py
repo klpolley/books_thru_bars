@@ -7,7 +7,7 @@ from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
-from app.book_submit import submit
+from app.book_submit import submit, logout
 from app.library import get_books, select_sent, select_have
 from flask_mail import Message
 from app.email import send_email
@@ -20,9 +20,22 @@ from psycopg2 import Error
 def index():
     return render_template('index.html', title='Home')
 
+
+@app.route('/whatWeDo', methods=['GET', 'POST'])
+def whatWeDo():
+    facilities = retrieve_facilities()
+    ithaca = get_ithaca()
+    library, sent = retrieve_genres()
+    mailings = retrieve_mailings()
+
+    return render_template('whatWeDo.html', title="What We Do",
+                           facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
+
+
 @app.route('/calendar', methods=['GET', 'POST'])
 def calendar():
     return render_template('calendar.html', title='Calendar')
+
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -99,6 +112,17 @@ def log_book_in():
     editors = get_all_editors()
     genres = get_genres()
     return render_template('bookin.html', books=titles, auths=authors, edits=editors, gens=genres)
+
+@app.route('/logout_book/<id>', methods=['GET','POST'])
+def logout_book(id):
+    try:
+        logout(id)
+        resp = {'feedback': 'book logged out!', 'category': 'success'}
+        return make_response(jsonify(resp), 200)
+    except Error as e:
+        print(f'Error {e}')
+        resp = {'feedback': 'error, book not logged out', 'category': 'failure'}
+        return make_response(jsonify(resp), 200)
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():

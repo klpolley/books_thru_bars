@@ -2,13 +2,11 @@ from app.connect import connect, disconnect
 from app.book_retrieve import proper_case
 
 def select_have():
-    return "select copyid, book.title, author.name, editor.name, " \
+    return "select copyid, book.title, author.name, " \
              "genre.name, copy.logged from copy " \
              "join book using(bookid) join genre using(genreid) " \
              "left join written_by using(bookid) " \
              "left join author using(authorid) " \
-             "left join edited_by using (bookid) " \
-             "left join editor using (editorid)" \
              "where copy.sent is null;"
 
 def select_sent():
@@ -37,17 +35,18 @@ def get_books(sql):
         if tuple[0] in books.keys():
             if tuple[2] not in books[tuple[0]]['authors']:
                 books[tuple[0]]['authors'].append(tuple[2])
-            if tuple[3] != '':
-                books[tuple[0]]['editors'].append(tuple[3])
+            # if tuple[3] != '':
+            #     books[tuple[0]]['editors'].append(tuple[3])
 
         else:
 
             d = {
                 'title': proper_case(tuple[1]).replace("^", "'"),
                 'authors': [tuple[2]],
-                'editors': [tuple[3]],
-                'genre': tuple[4],
-                'logged': tuple[5],
+                #'editors': [tuple[3]],
+                'genre': tuple[3],
+                'logged': tuple[4],
+                'id': tuple[0]
             }
             d['logged'] = d['logged'].strftime("%m/%d/%Y")
 
@@ -66,17 +65,17 @@ def get_books(sql):
                 authors += ", "
         b['authors'] = authors
 
-        bedit = b['editors']
-        editors = ''
-        if None not in b['editors']:
-            for e in b['editors']:
-                editors += proper_case(e)
-                if e != bedit[len(bedit)-1]:
-                    editors += ", "
-        else:
-            editors = 'N/A'
-
-        b['editors'] = editors
+        # bedit = b['editors']
+        # editors = ''
+        # if None not in b['editors']:
+        #     for e in b['editors']:
+        #         editors += proper_case(e)
+        #         if e != bedit[len(bedit)-1]:
+        #             editors += ", "
+        # else:
+        #     editors = 'N/A'
+        #
+        # b['editors'] = editors
 
 
     return books

@@ -2,7 +2,45 @@
 
 {% block content %}
 
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
+* {
+  box-sizing: border-box;
+}
+
+input {
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+#lib {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid #ddd;
+  font-size: 18px;
+}
+
+#myTable th, #myTable td {
+  text-align: left;
+  padding: 12px;
+}
+
+#myTable tr {
+  border-bottom: 1px solid #ddd;
+}
+
+#myTable tr.header, #myTable tr:hover {
+  background-color: #f1f1f1;
+}
+
 table {
   border-spacing: 0;
   width: 100%;
@@ -18,32 +56,97 @@ tr:nth-child(even) {
   background-color: #f2f2f2
 }
 </style>
-    <script src="../static/scripts/sort_table.js"></script>
-</head>
 
 <table id="lib">
+
+    <input type="text" id="myInput" onkeyup="myFunction(1)" placeholder="Search for titles.." title="Type in a title">
+    <input type="text" id="myInput2" onkeyup="myFunction(2)" placeholder="Search for authors.." title="Type in a name">
+
     <tr>
         <!--When a header is clicked, run the sortTable function, with a parameter,
         0 for sorting by names, 1 for sorting by country: -->
-        <th onclick="sortTable(0)">Title</th>
-        <th onclick="sortTable(1)">Author(s)</th>
-        <th onclick="sortTable(2)">Editor(s)</th>
-        <th onclick="sortTable(3)">Genre</th>
-        <th onclick="sortTable(4)">Date In</th>
-        <th onclick="sortTable(0)"></th>
+        <th>Title</th>
+        <th>Author(s)</th>
+        <th>Genre</th>
+        <th>Date In</th>
+        <th>Logout</th>
     </tr>
     {% for b in books %}
     <tr>
         <td>{{b.title}}</td>
         <td>{{b.authors}}</td>
-        <td>{{b.editors}}</td>
         <td>{{b.genre}}</td>
         <td>{{b.logged}}</td>
-        <td></td>
+        <td>
+                <button onclick="logout({{b.id}});">Log Out</button>
+        </td>
     </tr>
     {% endfor %}
 
 </table>
+
+<script>
+function myFunction(num) {
+  var input, filter, table, tr, td, i, txtValue;
+
+  if (num == 1) input = document.getElementById("myInput");
+  if (num == 2) input = document.getElementById("myInput2");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("lib");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+      if (num == 1) td = tr[i].getElementsByTagName("td")[0];
+      if (num == 2) td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function logout(id) {
+console.log(id);
+$.ajax({
+    url: '/logout_book/'+id,
+    type: 'GET',
+    data: id,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        // show the preloader (progress bar)
+        $('#form-response').html("<div class='progress'><div class='indeterminate'></div></div>");
+    },
+    complete: function () {
+        // hide the preloader (progress bar)
+        $('#form-response').html("");
+    },
+    success: function ( data ){
+        if ( !$.trim( data.feedback )) { // response from Flask is empty
+            toast_error_msg = "An empty response was returned.";
+            toast_category = "danger";
+        }
+        else { // response from Flask contains elements
+            toast_error_msg = data.feedback;
+            toast_category = data.category;
+            setTimeout(function(){window.location.reload();},5);
+        }
+    },
+    error: function(xhr) {console.log("error. see details below.");
+        console.log(xhr.status + ": " + xhr.responseText);
+        toast_error_msg = "An error occured";
+        toast_category = "danger";
+    },
+});
+}
+
+
+</script>
+
+
 
 
 

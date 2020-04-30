@@ -59,3 +59,15 @@ def submit_book(title, authors, editors, genre, quant):
 
         conn.commit()
         disconnect(conn)
+
+
+def logout(copy):
+    conn = connect()
+    with conn.cursor() as cursor:
+        s = "UPDATE copy SET sent = %s WHERE copyid = %s"
+        cursor.execute(s, [date.today(), copy])
+
+    conn.commit()
+    disconnect(conn)
+
+
