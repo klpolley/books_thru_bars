@@ -74,6 +74,7 @@ def data():
     return render_template('data.html', title="What We Do",
                            facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -96,6 +97,7 @@ def login():
 
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/library/log-in', methods=['POST', 'GET'])
 def log_book_in():
     titles = get_all_titles()
@@ -103,6 +105,7 @@ def log_book_in():
     editors = get_all_editors()
     genres = get_genres()
     return render_template('bookin.html', books=titles, auths=authors, edits=editors, gens=genres)
+
 
 @app.route('/submitbook', methods=['POST', 'GET'])
 def submit_book():

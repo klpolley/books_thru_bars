@@ -2,33 +2,110 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
-    <h1 class="font-allerta-stencil">Sign In</h1>
-        <div class="row">
-        <div class="col-md-4">
-            <form action="" method="post">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.username.label }}<br>
-                    {{ form.username(size=32) }}
-                    {% for error in form.username.errors %}
-                        <span style="color:red">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.password.label }}<br>
-                    {{ form.password(size=32) }}
-                    {% for error in form.password.errors %}
-                        <span style="color:red">[{{ error }}]</span>
-                    {% endfor %}
-                </p>
-                <p>
-                    {{ form.remember_me }}
-                    {{ form.remember_me.label }}
-                </p>
-                <p>
-                    {{ form.submit(class="bg-yellow text-black") }}
-                </p>
-            </form>
+    <html>
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+            <style>
+                h1, h2, h3, h4, h5, h6 {
+                    font-family: 'Raleway',sans-serif;
+                    text-align: center;
+                    color: white;
+                }
+                p {
+                    font-family: 'Montserrat', serif;
+                    font-size: 20px;
+                    color: white;
+                }
+                body {
+                    background-color: #E7E7E7;
+                }
+                .big_p {
+                    font-size: 30px;
+                }
+                .social:hover {
+                    cursor: pointer;
+                }
+                form input#submit {
+                    display: block;
+                    border-radius: 3px;
+                    border:1px solid #d8d8d8;
+                    text-align: center;
+                    background-color: #f4f4f4;
+                    padding: 10px;
+                    color: black;
+                    font-size: 15px;
+                    font-weight:bold;
+                }
+                form input#submit:hover{
+                    cursor: pointer;
+                    background-color: #dbdbdb;
+                    color: black;
+                }
+            </style>
+        </head>
+        <body>
+        <div class="row" style="background-color: #657D8C">
+            <br />
+            <br />
+            <br />
+            <h1 class="font-allerta-stencil">Sign In</h1>
+            <div class="col-md-2">
+            </div>
+                <div class="col-md-4">
+                    <form action="" method="post">
+                        {{ form.hidden_tag() }}
+                        <p>
+                        {{ form.username.label }}<br>{{ form.username(size=32) }}
+                        {% for error in form.username.errors %}
+                            <span style="color:red">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ form.password.label }}<br>
+                        {{ form.password(size=32) }}
+                        {% for error in form.password.errors %}
+                            <span style="color:red">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>
+                        {{ form.remember_me }}
+                        {{ form.remember_me.label }}
+                    </p>
+                    <p>
+                        {{ form.submit }}
+                    </p>
+                </form>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+            </div>
+            <div class="col-md-6">
+            </div>
         </div>
-    </div>
+            <div class="row" style="background-color: #143F59;">
+            <div class="col-md-12">
+                <div style="color: white; padding: 10px">
+                    <br />
+                    <img src="{{url_for('static', filename='images/email_icon.jpg')}}" width="50px"> booksthrubars@gmail.com&nbsp;
+                    <a href="https://www.instagram.com/icbooksthrubars/?hl=en" target="_blank">
+                        <img src="{{url_for('static', filename='images/instagram_icon.jpg')}}" width="50px" class="social">
+                    </a> icbooksthrubars
+                    <a href="https://www.facebook.com/ICBTB/" target="_blank">
+                        <img src="{{url_for('static', filename='images/facebook_logo.jpg')}}" width="50px" class="social">
+                    </a> IC Books Thru Bars
+                    <br />
+                </div>
+            </div>
+        </div>
+        </body>
 {% endblock %}
