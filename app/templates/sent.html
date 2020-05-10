@@ -12,7 +12,7 @@
 
 <div style="margin: 100px">
 
-<h2>Library</h2>
+<h2>Sent Books</h2>
 
 <table id="lib">
 
@@ -25,7 +25,7 @@
         <th>Title</th>
         <th>Author(s)</th>
         <th>Genre</th>
-        <th>Date In</th>
+        <th>Date Out</th>
         <th>Logout</th>
     </tr>
     {% for b in books %}
@@ -35,13 +35,12 @@
         <td>{{b.genre}}</td>
         <td>{{b.logged}}</td>
         <td>
-                <button class="waves-effect waves-light btn centered" onclick="logout({{b.id}});">Log Out</button>
+                <button class="waves-effect waves-light btn centered" onclick="login({{b.id}});">Log Back In</button>
         </td>
     </tr>
     {% endfor %}
 
 </table>
-
 </div>
 
 <script>
@@ -67,10 +66,10 @@ function myFunction(num) {
   }
 }
 
-function logout(id) {
+function login(id) {
 console.log(id);
 $.ajax({
-    url: '/logout_book/'+id,
+    url: '/login_book/'+id,
     type: 'GET',
     data: id,
     processData: false,

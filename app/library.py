@@ -10,8 +10,8 @@ def select_have():
              "where copy.sent is null;"
 
 def select_sent():
-    return "select copyid, book.title, author.name, editor.name, " \
-           "genre.name, copy.logged from copy " \
+    return "select copyid, book.title, author.name, " \
+           "genre.name, copy.sent from copy " \
            "join book using(bookid) join genre using(genreid) " \
            "left join written_by using(bookid) " \
            "left join author using(authorid) " \

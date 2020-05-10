@@ -1,0 +1,65 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+    IC Books Thru Bars
+{% endblock %}
+
+{% block navbar %}
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap" rel="stylesheet">
+            <style>
+                .nav_font {
+                    font-family: 'Montserrat';
+                    color: black;
+                    position: relative;
+                    top: 17px;
+                }
+            </style>
+</head>
+<body>
+    <nav class="navbar navbar-light" style="background-color: #edfeff; height:100px; padding:10px">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href = "{{ url_for('library') }}">
+                    <img src="{{url_for('static', filename='images/btb_logo.png')}}" width="55px" class="d-inline-block align-top" alt="Books Thru Bars">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('library') }}" class="nav_font">Library</a></li>
+                    <li><a href="{{ url_for('sent_books') }}" class="nav_font">Sent Books</a></li>
+                    <li><a href="{{ url_for('log_book_in') }}" class="nav_font">Add Book</a></li>
+                </ul>
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('logout') }}" class="nav_font">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    </body>
+{% endblock %}
+
+        <div class="container">
+
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <ul>
+                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                </ul>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+
+
+        </div>
+
+        {% block content %} {% endblock %}
+

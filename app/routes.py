@@ -1,5 +1,5 @@
 from flask import render_template, flash, redirect, url_for, request, make_response, jsonify
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.urls import url_parse
 
 from app import app, mail, csrf
@@ -7,7 +7,7 @@ from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
 from app.login import get_user, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
-from app.book_submit import submit, logout
+from app.book_submit import submit, bk_logout, bk_login
 from app.library import get_books, select_sent, select_have
 from flask_mail import Message
 from app.email import send_email
@@ -97,6 +97,10 @@ def login():
 
     return render_template('login.html', title='Sign In', form=form)
 
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 @app.route('/library', methods=['GET'])
 def library():
@@ -104,6 +108,9 @@ def library():
     return render_template('library.html', books=books)
 
 @app.route('/library/sent', methods=['GET'])
+def sent_books():
+    books = get_books(select_sent())
+    return render_template('sent.html', books=books)
 
 @app.route('/library/log-in', methods=['POST', 'GET'])
 def log_book_in():
@@ -116,12 +123,23 @@ def log_book_in():
 @app.route('/logout_book/<id>', methods=['GET','POST'])
 def logout_book(id):
     try:
-        logout(id)
+        bk_logout(id)
         resp = {'feedback': 'book logged out!', 'category': 'success'}
         return make_response(jsonify(resp), 200)
     except Error as e:
         print(f'Error {e}')
         resp = {'feedback': 'error, book not logged out', 'category': 'failure'}
+        return make_response(jsonify(resp), 200)
+
+@app.route('/login_book/<id>', methods=['GET','POST'])
+def login_book(id):
+    try:
+        bk_login(id)
+        resp = {'feedback': 'book logged back in!', 'category': 'success'}
+        return make_response(jsonify(resp), 200)
+    except Error as e:
+        print(f'Error {e}')
+        resp = {'feedback': 'error, book not logged in', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
 
 @app.route('/submitbook', methods=['POST', 'GET'])
@@ -163,14 +181,3 @@ def submit_book():
         print(f'Error {e}')
         resp = {'feedback': 'error, book not submitted', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
-
-@app.route('/test', methods=['POST', 'GET'])
-def test():
-    return render_template('test.html')
-
-@app.route('/autocomp', methods=['POST', 'GET'])
-def ajaxautocomplete():
-    if request.method == 'POST':
-        return get_all_titles()
-    else:
-        return "oops"

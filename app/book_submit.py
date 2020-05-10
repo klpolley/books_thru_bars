@@ -61,7 +61,7 @@ def submit_book(title, authors, editors, genre, quant):
         disconnect(conn)
 
 
-def logout(copy):
+def bk_logout(copy):
     conn = connect()
     with conn.cursor() as cursor:
         s = "UPDATE copy SET sent = %s WHERE copyid = %s"
@@ -70,4 +70,12 @@ def logout(copy):
     conn.commit()
     disconnect(conn)
 
+def bk_login(copy):
+    conn = connect()
+    with conn.cursor() as cursor:
+        s = "UPDATE copy SET sent = NULL WHERE copyid = %s"
+        cursor.execute(s, [copy])
+
+    conn.commit()
+    disconnect(conn)
 
