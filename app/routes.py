@@ -75,6 +75,7 @@ def data():
     return render_template('data.html', title="What We Do",
                            facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -92,7 +93,7 @@ def login():
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('library')
         return redirect(next_page)
 
     return render_template('login.html', title='Sign In', form=form)
