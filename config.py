@@ -12,3 +12,4 @@ class Config(object):
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = [MAIL_USERNAME]
+

@@ -11,7 +11,7 @@ $(document).ready(function() {
         if (value == '1') {
             document.getElementById("authors").innerHTML =
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author1\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
@@ -20,14 +20,14 @@ $(document).ready(function() {
         } else if (value == '2') {
             document.getElementById("authors").innerHTML =
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author1\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>" +
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author2\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
@@ -36,21 +36,21 @@ $(document).ready(function() {
         } else if (value == '3') {
             document.getElementById("authors").innerHTML =
             "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author1\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>" +
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author2\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>" +
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author3\" required/>\n" +
                 "                    <label for=\"author-input\">Author</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
@@ -58,13 +58,13 @@ $(document).ready(function() {
                 "            </div>";
         } else if (value == 'VARIOUS') {
             document.getElementById("authors").innerHTML = "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author\" required disabled value='VARIOUS'/>\n" +
                 "                </div>\n" +
                 "            </div>";
         } else if (value == 'N/A') {
             document.getElementById("authors").innerHTML = "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate authors\" name =\"author\" required disabled value='N/A'/>\n" +
 
                 "                    <span class=\"helper-text\" data-error=\"Enter the author's name here.\" data-success=\"\"></span>\n" +
@@ -89,7 +89,7 @@ $(document).ready(function() {
         if (value == '1') {
             document.getElementById("editors").innerHTML =
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor1\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
@@ -98,14 +98,14 @@ $(document).ready(function() {
         } else if (value == '2') {
             document.getElementById("editors").innerHTML =
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor1\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>"+
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor2\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
@@ -114,21 +114,21 @@ $(document).ready(function() {
         } else if (value == '3') {
             document.getElementById("editors").innerHTML =
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor1\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>"+
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor2\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
                 "                </div>\n" +
                 "            </div>" +
                 "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor3\" required/>\n" +
                 "                    <label for=\"editor-input\">Editor</label>\n" +
                 "                    <span class=\"helper-text\" data-error=\"Enter the editor's name here.\" data-success=\"\"></span>\n" +
@@ -136,7 +136,7 @@ $(document).ready(function() {
                 "            </div>";
         } else if (value == 'VARIOUS') {
             document.getElementById("editors").innerHTML = "<div class=\"row\">\n" +
-                "                <div class=\"input-field col autocomplete\">\n" +
+                "                <div class=\"input-field col s12 autocomplete\">\n" +
                 "                    <input type=\"text\" class=\"validate editors\" name =\"editor\" required disabled value='VARIOUS'/>\n" +
                 "                </div>\n" +
                 "            </div>";

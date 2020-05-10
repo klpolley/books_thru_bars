@@ -8,7 +8,7 @@ def proper_case(string):
     result = ''
     for word in words:
         word = word.lower()
-        if word in ['ii', 'iii', 'lgbt']:
+        if word in ['ii', 'iii', 'lgbt', 'dc']:
             word = word.upper()
         else:
             word = word.capitalize()

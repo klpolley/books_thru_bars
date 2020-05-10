@@ -1,13 +1,14 @@
 from flask import render_template, flash, redirect, url_for, request, make_response, jsonify
-from flask_login import login_user, current_user, login_required
+from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.urls import url_parse
 
 from app import app, mail, csrf
 from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
-from app.login import get_user, check_password
+from app.login import get_user_by_name, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
-from app.book_submit import submit
+from app.book_submit import submit, bk_logout, bk_login
+from app.library import get_books, select_sent, select_have
 from flask_mail import Message
 from app.email import send_email
 
@@ -50,39 +51,25 @@ def contact():
         return render_template('contact_us.html', title='Contact Us', form=form)
 
 
-@app.route('/map', methods=['GET', 'POST'])
-def map():
-    facilities = retrieve_facilities()
-    ithaca = get_ithaca()
-
-    return render_template('map.html', title="Map", facilities = facilities, ithaca = ithaca)
-
-
-@app.route('/chart', methods=['GET', 'POST'])
-def charts():
-    library, sent = retrieve_genres()
-    return render_template('charts.html', title="Charts", library=library, sent=sent)
-
-
-@app.route('/what-we-do', methods=['GET', 'POST'])
-def data():
-    facilities = retrieve_facilities()
-    ithaca = get_ithaca()
-    library, sent = retrieve_genres()
-    mailings = retrieve_mailings()
-
-    return render_template('data.html', title="What We Do",
-                           facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
+# @app.route('/what-we-do', methods=['GET', 'POST'])
+# def data():
+#     facilities = retrieve_facilities()
+#     ithaca = get_ithaca()
+#     library, sent = retrieve_genres()
+#     mailings = retrieve_mailings()
+#
+#     return render_template('data.html', title="What We Do",
+#                            facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('library'))
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = get_user(form.username.data)
+        user = get_user_by_name(form.username.data)
 
         if user is None or not check_password(user, form.password.data):
             flash('Invalid username or password')
@@ -92,13 +79,35 @@ def login():
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('index')
+            next_page = url_for('library')
         return redirect(next_page)
 
     return render_template('login.html', title='Sign In', form=form)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@app.route('/library', methods=['GET'])
+@login_required
+def library():
+    books = get_books(select_have())
+    return render_template('library.html', books=books)
+
+
+@app.route('/library/sent', methods=['GET'])
+@login_required
+def sent_books():
+    books = get_books(select_sent())
+    return render_template('sent.html', books=books)
+
+
 @app.route('/library/log-in', methods=['POST', 'GET'])
+@login_required
 def log_book_in():
     titles = get_all_titles()
     authors = get_all_authors()
@@ -107,7 +116,34 @@ def log_book_in():
     return render_template('bookin.html', books=titles, auths=authors, edits=editors, gens=genres)
 
 
+@app.route('/logout_book/<id>', methods=['GET','POST'])
+@login_required
+def logout_book(id):
+    try:
+        bk_logout(id)
+        resp = {'feedback': 'book logged out!', 'category': 'success'}
+        return make_response(jsonify(resp), 200)
+    except Error as e:
+        print(f'Error {e}')
+        resp = {'feedback': 'error, book not logged out', 'category': 'failure'}
+        return make_response(jsonify(resp), 200)
+
+
+@app.route('/login_book/<id>', methods=['GET','POST'])
+@login_required
+def login_book(id):
+    try:
+        bk_login(id)
+        resp = {'feedback': 'book logged back in!', 'category': 'success'}
+        return make_response(jsonify(resp), 200)
+    except Error as e:
+        print(f'Error {e}')
+        resp = {'feedback': 'error, book not logged in', 'category': 'failure'}
+        return make_response(jsonify(resp), 200)
+
+
 @app.route('/submitbook', methods=['POST', 'GET'])
+@login_required
 def submit_book():
 
     data = request.form.to_dict()
@@ -146,14 +182,3 @@ def submit_book():
         print(f'Error {e}')
         resp = {'feedback': 'error, book not submitted', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
-
-@app.route('/test', methods=['POST', 'GET'])
-def test():
-    return render_template('test.html')
-
-@app.route('/autocomp', methods=['POST', 'GET'])
-def ajaxautocomplete():
-    if request.method == 'POST':
-        return get_all_titles()
-    else:
-        return "oops"

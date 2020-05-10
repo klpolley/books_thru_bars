@@ -1,0 +1,111 @@
+{% extends "lib_base.html" %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="../static/stylesheets/library.css">
+
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"  media="screen,projection"/>
+
+<div style="margin: 100px">
+
+<h2>Sent Books</h2>
+
+<table id="lib">
+
+    <input type="text" id="myInput" onkeyup="myFunction(1)" placeholder="Search for titles.." title="Type in a title">
+    <input type="text" id="myInput2" onkeyup="myFunction(2)" placeholder="Search for authors.." title="Type in a name">
+
+    <tr>
+        <!--When a header is clicked, run the sortTable function, with a parameter,
+        0 for sorting by names, 1 for sorting by country: -->
+        <th>Title</th>
+        <th>Author(s)</th>
+        <th>Genre</th>
+        <th>Date Out</th>
+        <th>Logout</th>
+    </tr>
+    {% for b in books %}
+    <tr>
+        <td>{{b.title}}</td>
+        <td>{{b.authors}}</td>
+        <td>{{b.genre}}</td>
+        <td>{{b.logged}}</td>
+        <td>
+                <button class="waves-effect waves-light btn centered" onclick="login({{b.id}});">Log Back In</button>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+</div>
+
+<script>
+function myFunction(num) {
+  var input, filter, table, tr, td, i, txtValue;
+
+  if (num == 1) input = document.getElementById("myInput");
+  if (num == 2) input = document.getElementById("myInput2");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("lib");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+      if (num == 1) td = tr[i].getElementsByTagName("td")[0];
+      if (num == 2) td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function login(id) {
+console.log(id);
+$.ajax({
+    url: '/login_book/'+id,
+    type: 'GET',
+    data: id,
+    processData: false,
+    contentType: false,
+    beforeSend: function() {
+        // show the preloader (progress bar)
+        $('#form-response').html("<div class='progress'><div class='indeterminate'></div></div>");
+    },
+    complete: function () {
+        // hide the preloader (progress bar)
+        $('#form-response').html("");
+    },
+    success: function ( data ){
+        if ( !$.trim( data.feedback )) { // response from Flask is empty
+            toast_error_msg = "An empty response was returned.";
+            toast_category = "danger";
+        }
+        else { // response from Flask contains elements
+            toast_error_msg = data.feedback;
+            toast_category = data.category;
+            setTimeout(function(){window.location.reload();},5);
+        }
+    },
+    error: function(xhr) {console.log("error. see details below.");
+        console.log(xhr.status + ": " + xhr.responseText);
+        toast_error_msg = "An error occured";
+        toast_category = "danger";
+    },
+});
+}
+
+
+</script>
+
+
+
+
+
+{% endblock %}

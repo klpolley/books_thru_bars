@@ -24,7 +24,32 @@ class User(UserMixin):
     def get_pwhash(self):
         return self.pwhash
 
-def get_user(username):
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
+@login.user_loader
+def load_user(user_id):
+    return get_user_by_id(user_id)
+
+def get_user_by_id(user_id):
+    conn = connect()
+    c = conn.cursor()
+
+    select = "SELECT id, username, password FROM admin WHERE id = %s"
+    c.execute(select, [user_id])
+    data = c.fetchall()
+
+    if data == []:
+        return None
+    else:
+        user = User()
+        user.set_id(data[0][0])
+        user.set_user(data[0][1])
+        user.set_password(data[0][2])
+
+    return user
+
+def get_user_by_name(username):
     conn = connect()
     c = conn.cursor()
 
@@ -58,7 +83,5 @@ def check_password(user, password):
     else:
         return bcrypt.check_password_hash(pw, password)
 
-@login.user_loader
-def load_user(user_id):
-    return get_user(user_id)
+
 
