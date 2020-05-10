@@ -5,7 +5,7 @@ from werkzeug.urls import url_parse
 from app import app, mail, csrf
 from app.forms import LoginForm, ContactForm
 from app.get_data import get_ithaca, retrieve_facilities, retrieve_genres, retrieve_mailings
-from app.login import get_user, check_password
+from app.login import get_user_by_name, check_password
 from app.book_retrieve import get_all_titles, get_all_authors, get_all_editors, get_genres
 from app.book_submit import submit, bk_logout, bk_login
 from app.library import get_books, select_sent, select_have
@@ -65,19 +65,17 @@ def contact():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('index'))
+        return redirect(url_for('library'))
 
     form = LoginForm()
     if form.validate_on_submit():
-        user = get_user(form.username.data)
+        user = get_user_by_name(form.username.data)
 
         if user is None or not check_password(user, form.password.data):
             flash('Invalid username or password')
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
-        # print(current_user.is_authenticated)
-        # print(current_user)
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -88,30 +86,28 @@ def login():
 
 
 @app.route('/logout')
-#@login_required
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
 
 @app.route('/library', methods=['GET'])
-#login_required
+@login_required
 def library():
-    # print(current_user.is_authenticated)
-    # print(current_user)
     books = get_books(select_have())
     return render_template('library.html', books=books)
 
 
 @app.route('/library/sent', methods=['GET'])
-#@login_required
+@login_required
 def sent_books():
     books = get_books(select_sent())
     return render_template('sent.html', books=books)
 
 
 @app.route('/library/log-in', methods=['POST', 'GET'])
-#@login_required
+@login_required
 def log_book_in():
     titles = get_all_titles()
     authors = get_all_authors()
@@ -121,7 +117,7 @@ def log_book_in():
 
 
 @app.route('/logout_book/<id>', methods=['GET','POST'])
-#@login_required
+@login_required
 def logout_book(id):
     try:
         bk_logout(id)
@@ -134,7 +130,7 @@ def logout_book(id):
 
 
 @app.route('/login_book/<id>', methods=['GET','POST'])
-#@login_required
+@login_required
 def login_book(id):
     try:
         bk_login(id)
@@ -147,7 +143,7 @@ def login_book(id):
 
 
 @app.route('/submitbook', methods=['POST', 'GET'])
-#@login_required
+@login_required
 def submit_book():
 
     data = request.form.to_dict()
