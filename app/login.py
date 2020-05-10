@@ -24,6 +24,9 @@ class User(UserMixin):
     def get_pwhash(self):
         return self.pwhash
 
+    def __repr__(self):
+        return '<User {}>'.format(self.username)
+
 def get_user(username):
     conn = connect()
     c = conn.cursor()

@@ -51,29 +51,15 @@ def contact():
         return render_template('contact_us.html', title='Contact Us', form=form)
 
 
-@app.route('/map', methods=['GET', 'POST'])
-def map():
-    facilities = retrieve_facilities()
-    ithaca = get_ithaca()
-
-    return render_template('map.html', title="Map", facilities = facilities, ithaca = ithaca)
-
-
-@app.route('/chart', methods=['GET', 'POST'])
-def charts():
-    library, sent = retrieve_genres()
-    return render_template('charts.html', title="Charts", library=library, sent=sent)
-
-
-@app.route('/what-we-do', methods=['GET', 'POST'])
-def data():
-    facilities = retrieve_facilities()
-    ithaca = get_ithaca()
-    library, sent = retrieve_genres()
-    mailings = retrieve_mailings()
-
-    return render_template('data.html', title="What We Do",
-                           facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
+# @app.route('/what-we-do', methods=['GET', 'POST'])
+# def data():
+#     facilities = retrieve_facilities()
+#     ithaca = get_ithaca()
+#     library, sent = retrieve_genres()
+#     mailings = retrieve_mailings()
+#
+#     return render_template('data.html', title="What We Do",
+#                            facilities=facilities, ithaca=ithaca, library=library, sent=sent, mailings=mailings)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -90,6 +76,8 @@ def login():
             return redirect(url_for('login'))
 
         login_user(user, remember=form.remember_me.data)
+        # print(current_user.is_authenticated)
+        # print(current_user)
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
@@ -98,22 +86,32 @@ def login():
 
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/logout')
+#@login_required
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+
 @app.route('/library', methods=['GET'])
+#login_required
 def library():
+    # print(current_user.is_authenticated)
+    # print(current_user)
     books = get_books(select_have())
     return render_template('library.html', books=books)
 
+
 @app.route('/library/sent', methods=['GET'])
+#@login_required
 def sent_books():
     books = get_books(select_sent())
     return render_template('sent.html', books=books)
 
+
 @app.route('/library/log-in', methods=['POST', 'GET'])
+#@login_required
 def log_book_in():
     titles = get_all_titles()
     authors = get_all_authors()
@@ -121,7 +119,9 @@ def log_book_in():
     genres = get_genres()
     return render_template('bookin.html', books=titles, auths=authors, edits=editors, gens=genres)
 
+
 @app.route('/logout_book/<id>', methods=['GET','POST'])
+#@login_required
 def logout_book(id):
     try:
         bk_logout(id)
@@ -132,7 +132,9 @@ def logout_book(id):
         resp = {'feedback': 'error, book not logged out', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
 
+
 @app.route('/login_book/<id>', methods=['GET','POST'])
+#@login_required
 def login_book(id):
     try:
         bk_login(id)
@@ -143,7 +145,9 @@ def login_book(id):
         resp = {'feedback': 'error, book not logged in', 'category': 'failure'}
         return make_response(jsonify(resp), 200)
 
+
 @app.route('/submitbook', methods=['POST', 'GET'])
+#@login_required
 def submit_book():
 
     data = request.form.to_dict()
