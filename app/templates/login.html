@@ -10,12 +10,12 @@
                 h1, h2, h3, h4, h5, h6 {
                     font-family: 'Raleway',sans-serif;
                     text-align: center;
-                    color: white;
+                    color: black;
                 }
                 p {
                     font-family: 'Montserrat', serif;
                     font-size: 20px;
-                    color: white;
+                    color: black;
                 }
                 body {
                     background-color: #E7E7E7;
@@ -45,7 +45,7 @@
             </style>
         </head>
         <body>
-        <div class="row" style="background-color: #657D8C">
+        <div class="row" style="background-color: #a3c4d9">
             <br />
             <br />
             <br />
@@ -56,7 +56,8 @@
                     <form action="" method="post">
                         {{ form.hidden_tag() }}
                         <p>
-                        {{ form.username.label }}<br>{{ form.username(size=32) }}
+                        {{ form.username.label }}<br>
+                            {{ form.username(size=32) }}
                         {% for error in form.username.errors %}
                             <span style="color:red">[{{ error }}]</span>
                         {% endfor %}
