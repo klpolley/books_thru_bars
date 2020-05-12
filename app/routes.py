@@ -37,18 +37,18 @@ def calendar():
     return render_template('calendar.html', title='Calendar')
 
 
-@app.route('/contact', methods=['GET', 'POST'])
-def contact():
-    form = ContactForm()
-    if request.method == 'POST':
-        if not form.validate():
-            flash('All fields are required.')
-            return render_template('contact_us.html', form=form)
-        else:
-            send_email(name=form.name.data, email=form.email.data, message=form.message.data)
-            return render_template('contact_us.html', success=True)
-    else:
-        return render_template('contact_us.html', title='Contact Us', form=form)
+# @app.route('/contact', methods=['GET', 'POST'])
+# def contact():
+#     form = ContactForm()
+#     if request.method == 'POST':
+#         if not form.validate():
+#             flash('All fields are required.')
+#             return render_template('contact_us.html', form=form)
+#         else:
+#             send_email(name=form.name.data, email=form.email.data, message=form.message.data)
+#             return render_template('contact_us.html', success=True)
+#     else:
+#         return render_template('contact_us.html', title='Contact Us', form=form)
 
 
 # @app.route('/what-we-do', methods=['GET', 'POST'])
